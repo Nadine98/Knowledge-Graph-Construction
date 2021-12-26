@@ -110,13 +110,12 @@ def buildKG(fproduct):
         allergy = URIRef(ingr[a.lower().replace(' ', '')])
         foodGraph.add((allergy, rdf.type, allergen['1110201'],))
 
-    return foodGraph
-
 
 def serializeGraph():
     foodGraph.serialize('foodGraph.ttl', format='ttl')
 
 
+# Fetching the url
 def get_url():
     while 1:
         url = str(input('\nEnter here the url: \n'))
@@ -134,16 +133,22 @@ def get_url():
 
 def main():
 
+    # Check if there is a Turtle file
+    # if yes, parse this file
     if Path('foodGraph.ttl').is_file():
         exists = True
         foodGraph.parse('foodGraph.ttl')
     else:
         exists = False
 
-   
+   # Fetching the url from the input stream
+   # Break the process if enter an empty url
     url = get_url()
     while url != '':
         if exists:
+            # Check if the food product is allready in the Knowledge Graph
+            # if yes, ingnore this url
+            # else, fetch all information to this product and add it to the KG
             node = Literal(url, datatype=XSD['string'])
             if not (None, None, node) in foodGraph:
                 f = get_product(url)

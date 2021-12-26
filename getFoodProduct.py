@@ -215,13 +215,15 @@ def get_country(soup):
                 country = table_rows[td[0]].td.text
                 country = country.replace('\u200e', '').strip()
                 break
-
-        country=trans.translate(country, dest='de').text
+        
+        if country!='None':
+          country=trans.translate(country, dest='de').text
 
         if country=='Vereinigte Staaten':
             country='USA'
-        if country=='Vereinigte Königreich':
+        if country=='Vereinigte Königreich' or country=='Vereinigtes Königreich':
             country='UK'
+
     return country
 
 
