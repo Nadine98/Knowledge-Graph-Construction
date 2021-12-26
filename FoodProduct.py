@@ -1,0 +1,102 @@
+
+class nutritional_information:
+
+    def __init__(self):
+        self.servingSize = 'None'
+        self.fats = 'None'
+        self.carbohydrates ='None'
+        self.protein = 'None'
+
+    def setServingSize(self, servingSize):
+        self.servingSize = servingSize
+
+    def setFats(self, fats):
+        self.fats = fats
+
+    def setCarbohydrates(self, carbs):
+        self.carbohydrates = carbs
+
+    def setProteins(self, protein):
+        self.protein = protein
+
+
+class foodIngredient:
+    def __init__(self, ingredient=None):
+        self.ingredient = ingredient
+        self.subingredient = list()
+
+    def addIngredient(self, ingredient):
+        self.ingredient = ingredient
+
+    def addSubIngredient(self, subingredient):
+
+        if type(subingredient) is str:
+            subingredient = [subingredient]
+
+        self.subingredient.extend(subingredient)
+
+
+class foodProduct:
+
+    def __init__(self):
+        self.name = 'None'
+        self.description='None'
+        self.brand ='None'
+        self.price = 'None'
+        self.asin = 'None'
+        self.url = 'None'
+        self.category = 'None'
+        self.country_of_origin = 'None'
+        self.ingredients = 'None'
+        self.allergen = 'None'
+        self.nutritional_information = nutritional_information()
+
+    def setName(self, name):
+        self.name = name
+
+    def setDecription(self, description):
+        self.description=description
+
+    def setBrand(self, brand):
+        self.brand = brand
+
+    def setPrice(self, price):
+        self.price = price
+
+    def setAsin(self, asin):
+        self.asin = asin
+
+    def setUrl(self, url):
+        self.url = url
+
+    def setCategory(self, category):
+        self.category = category
+
+    def setCountry(self, country):
+        self.country_of_origin = country
+
+    def addIngredient(self, ingredient):
+        self.ingredients=list()
+        if type(ingredient) is list:
+            self.ingredients = [foodIngredient()
+                                for i in range(len(ingredient))]
+
+            for i, value in enumerate(ingredient):
+                if type(value) is str:
+                    self.ingredients[i].addIngredient(value)
+
+                if type(value) is list:
+                    self.ingredients[i].addIngredient(value[0])
+                    value.remove(value[0])
+                    for j, value2 in enumerate(value):
+                        self.ingredients[i].addSubIngredient(value2)
+
+    def addAllergen(self, allergen):
+        self.allergen=list()
+        if type(allergen) is foodIngredient:
+            allergen = [allergen.ingredient]
+        self.allergen.extend(allergen)
+
+    def set_nutritional_information(self, nutrition):
+        if type(nutrition) is nutritional_information:
+            self.nutritional_information = nutrition
