@@ -4,10 +4,8 @@ from getFoodProduct import get_product
 from pathlib import Path
 
 from rdflib import Graph, URIRef, BNode, Literal
-from rdflib.namespace import Namespace, RDF, SDO, XSD
-
+from rdflib.namespace import Namespace, RDF, SDO, XSD, RDFS
 foodGraph = Graph()
-
 
 
 def addfoodProduct(fproduct):
@@ -20,22 +18,22 @@ def addfoodProduct(fproduct):
     nutritionalInformation = Namespace(
         'https://schema.org/NutritionInformation#')
     individualProduct = Namespace('https://schema.org/IndividualProduct#')
-    allergen = Namespace('http://purl.obolibrary.org/obo/OBI_')
     dbpediaResource = Namespace('http://de.dbpedia.org/resource/')
 
     schema = SDO
     rdf = RDF
+    rdfs = RDFS
     xsd = XSD
 
     # Binding the namespaces to a prefix
     foodGraph.bind('', ex)
     foodGraph.bind('food', food)
-    foodGraph.bind('individualProduct', individualProduct)
-    foodGraph.bind('nutritionInformation', nutritionalInformation)
-    foodGraph.bind('allergen', allergen)
+    foodGraph.bind('ip', individualProduct)
+    foodGraph.bind('ni', nutritionalInformation)
     foodGraph.bind('dbr', dbpediaResource)
     foodGraph.bind('schema', schema)
     foodGraph.bind('rdf', rdf)
+    foodGraph.bind('rdfs', rdfs)
     foodGraph.bind('xsd', xsd)
 
     # Creating nodes for the general information
@@ -48,7 +46,7 @@ def addfoodProduct(fproduct):
     asin = Literal(fproduct.asin, datatype=xsd['string'])
     url = Literal(fproduct.url, datatype=xsd['string'])
     category = Literal(fproduct.category, datatype=xsd['string'])
-    countryName = Literal(fproduct.country_of_origin, datatype=xsd['string'])
+    countryName = Literal(fproduct.country_of_origin, lang='de')
 
     # Adding the nodes for general information
     foodGraph.add((foodproduct, rdf.type, food['FoodProduct']))
@@ -61,7 +59,7 @@ def addfoodProduct(fproduct):
     foodGraph.add((foodproduct, schema['isBasedOn'], url))
     foodGraph.add((foodproduct, individualProduct['category'], category))
     foodGraph.add((foodproduct, individualProduct['countryOfOrigin'], country))
-    foodGraph.add((country, schema.name, countryName))
+    foodGraph.add((country, rdfs.label, countryName))
 
     # Creating nodes for the nuritional information
 
@@ -89,36 +87,47 @@ def addfoodProduct(fproduct):
     for i in fproduct.ingredients:
         # Creating the nodes for the ingredient
         ingredient = URIRef(ingr[i.ingredient.lower().replace(' ', '')])
-        ingredientName = Literal(i.ingredient.lower().capitalize(), datatype=xsd['string'])
+        ingredientName = Literal(
+            i.ingredient.lower().title(), datatype=xsd['string'])
 
         # Adding the ingredient to the graph
         foodGraph.add((foodproduct, food['containsIngredient'], ingredient))
-        foodGraph.add((ingredient,rdf.type,food['Ingredient']))
-        foodGraph.add((ingredient, schema['name'], ingredientName))
+        foodGraph.add((ingredient, rdf.type, food['Ingredient']))
+        foodGraph.add((ingredient, rdfs.label, ingredientName))
 
         if i.subingredient:
 
             # Creating the nodes for the subingredients
             for sub in i.subingredient:
                 subing = URIRef(ingr[sub.lower().replace(' ', '')])
-                subIngredientName = Literal(sub.lower().capitalize(), datatype=xsd['string'])
+                subIngredientName = Literal(
+                    sub.lower().title(), datatype=xsd['string'])
 
                 # Adding subingredients of an ingredient
                 foodGraph.add((ingredient, food['containsIngredient'], subing))
-                foodGraph.add((subing,rdf.type,food['Ingredient']))
-                foodGraph.add((subing, schema['name'], subIngredientName))
+                foodGraph.add((subing, rdf.type, food['Ingredient']))
+                foodGraph.add((subing, rdfs.label, subIngredientName))
 
-    # Adding the allergens
+    # Adding the class allergen
+    allergen = URIRef(dbpediaResource['Allergen'])
+    foodGraph.add((allergen, rdfs.label, Literal('Allergen', lang='de')))
+
+    # Adding the allergens from the ingredients
     for a in fproduct.allergen:
         allergy = URIRef(ingr[a.lower().replace(' ', '')])
-        foodGraph.add((allergy, rdf.type, allergen['1110201'],))
+        foodGraph.add((allergy, rdf.type, allergen))
+
+    # Add the rating and the reviewNumber
+    foodGraph.add((foodproduct, schema['ratingValue'], Literal(
+        fproduct.rating, datatype=xsd['string'])))
+    foodGraph.add((foodproduct, schema['reviewCount'], Literal(
+        fproduct.reviewNumber, datatype=xsd['nonNegativeInteger'])))
 
 
 def serializeGraph():
     foodGraph.serialize('foodGraph.ttl', format='ttl')
 
 
-# Fetching the url
 def get_url():
     while 1:
         url = str(input('\nEnter here the url: \n'))
@@ -144,13 +153,13 @@ def buildGraph():
     else:
         exists = False
 
-   # Fetching the url from the input stream
+   # Fetch the url from the input stream
    # Break the process if enter an empty url
     url = get_url()
     while url != '':
         if exists:
             # Check if the food product is allready in the Knowledge Graph
-            # if yes, ingnore this url
+            # if yes, ingnore this product
             # else, fetch all information to this product and add it to the KG
             node = Literal(url, datatype=XSD['string'])
             if not (None, None, node) in foodGraph:
@@ -167,5 +176,6 @@ def buildGraph():
 def main():
     buildGraph()
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()

@@ -7,6 +7,28 @@ from FoodProduct import foodProduct
 from FoodProduct import nutritional_information
 
 
+def get_rating(soup):
+    try:
+       review_score = soup.find('span',attrs={'class':'a-icon-alt'}).text.strip()
+    except:
+        review_score='None'
+    return review_score
+  
+    
+
+def get_reviewNumber(soup):
+    try:
+        reviewNumber= soup.find(
+                'span', attrs={'id': 'acrCustomerReviewText'}).text.strip().replace('.','')
+        reviewNumber=re.findall(r'\d+',reviewNumber)[0]
+        
+    except:
+        reviewNumber='None'
+    
+    return reviewNumber
+    
+
+
 def get_allergies_table(soup):
     
     allergen = ['None']
@@ -49,7 +71,7 @@ def get_allergens(soup, foodIngredients):
                             allergen.append(sub)
 
     if allergen == list():
-        allergen = table
+        allergen = 'None'
 
     return allergen
 
@@ -73,8 +95,7 @@ def get_ingredients(soup):
         if 'Kann' in contents:
             contents = contents[:contents.find('Kann ')]
             contents = contents[:contents.find('(Kann ')]
-        print(contents)
-        print()
+      
 
         # Removing unneccary words and characters and words
         if 'Zutaten:' in contents:
@@ -88,6 +109,8 @@ def get_ingredients(soup):
             contents = contents.replace('}', ')')
         if ';' in contents:
             contents = contents.replace(';', ',')
+        if 'und ' in contents:
+            contents = contents.replace('und', ',')
         if 'aus ' in contents:
              contents = contents.replace('aus ', '')
         if 'mit ' in contents:
@@ -98,6 +121,10 @@ def get_ingredients(soup):
             contents = contents.replace('mindestens ', '')
         if 'enthält ' in contents:
             contents = contents.replace('enthält', '')
+        if 'gemahlen' in contents:
+            contents = contents.replace('gemahlen','')
+        if 'gehackt' in contents:
+            contents = contents.replace('gehackt','')
 
        
         # Removing the percentages
@@ -114,9 +141,6 @@ def get_ingredients(soup):
 
             elif content =='.' and x==0 :
                 ingredients.append(ingredient.strip())
-
-            elif content =='-':
-                ingredient=''
             
             elif content == ':':
                 ingredient = ''
@@ -319,7 +343,16 @@ def get_product(url):
     foodproduct.set_nutritional_information(get_nutritional_information(soup))
     foodproduct.setCategory(get_amazon_category(soup))
     foodproduct.addIngredient(get_ingredients(soup))
-    foodproduct.addAllergen(get_allergens(soup, foodproduct.ingredients))
+    
+    allergens=get_allergens(soup,foodproduct.ingredients)
+    if allergens =='None':
+        allergens=get_allergies_table(soup)
+    
+    foodproduct.addAllergen(allergens)
+    foodproduct.addAllergensToIngredients(allergens)
+
+    foodproduct.set_reviewNumber(get_reviewNumber(soup))
+    foodproduct.set_rating(get_rating(soup))
 
     return foodproduct
 

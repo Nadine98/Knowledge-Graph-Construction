@@ -50,6 +50,8 @@ class foodProduct:
         self.ingredients = 'None'
         self.allergen = 'None'
         self.nutritional_information = nutritional_information()
+        self.reviewNumber='None'
+        self.rating='None'
 
     def setName(self, name):
         self.name = name
@@ -76,8 +78,8 @@ class foodProduct:
         self.country_of_origin = country
 
     def addIngredient(self, ingredient):
-        self.ingredients=list()
-        if type(ingredient) is list:
+        
+        if type(ingredient) is list and self.ingredients=='None':
             self.ingredients = [foodIngredient()
                                 for i in range(len(ingredient))]
 
@@ -91,6 +93,18 @@ class foodProduct:
                     for j, value2 in enumerate(value):
                         self.ingredients[i].addSubIngredient(value2)
 
+    def addAllergensToIngredients(self,allergens):
+
+        if type(allergens) is list and self.ingredients!='None':
+            addToIngredients=[foodIngredient()
+                                for i in range(len(allergens))]
+            for i, value in enumerate(allergens):
+                if type(value) is str:
+                    addToIngredients[i].addIngredient(value)
+            
+            self.ingredients=self.ingredients+addToIngredients
+  
+
     def addAllergen(self, allergen):
         self.allergen=list()
         if type(allergen) is foodIngredient:
@@ -100,3 +114,9 @@ class foodProduct:
     def set_nutritional_information(self, nutrition):
         if type(nutrition) is nutritional_information:
             self.nutritional_information = nutrition
+
+    def set_reviewNumber(self, number):
+        self.reviewNumber=number
+    
+    def set_rating(self,rating):
+        self.rating=rating
