@@ -9,7 +9,8 @@ from rdflib.namespace import Namespace, RDF, SDO, XSD
 foodGraph = Graph()
 
 
-def buildKG(fproduct):
+
+def addfoodProduct(fproduct):
 
     global foodGraph
 
@@ -88,10 +89,11 @@ def buildKG(fproduct):
     for i in fproduct.ingredients:
         # Creating the nodes for the ingredient
         ingredient = URIRef(ingr[i.ingredient.lower().replace(' ', '')])
-        ingredientName = Literal(i.ingredient, datatype=xsd['string'])
+        ingredientName = Literal(i.ingredient.lower().capitalize(), datatype=xsd['string'])
 
         # Adding the ingredient to the graph
         foodGraph.add((foodproduct, food['containsIngredient'], ingredient))
+        foodGraph.add((ingredient,rdf.type,food['Ingredient']))
         foodGraph.add((ingredient, schema['name'], ingredientName))
 
         if i.subingredient:
@@ -99,10 +101,11 @@ def buildKG(fproduct):
             # Creating the nodes for the subingredients
             for sub in i.subingredient:
                 subing = URIRef(ingr[sub.lower().replace(' ', '')])
-                subIngredientName = Literal(sub, datatype=xsd['string'])
+                subIngredientName = Literal(sub.lower().capitalize(), datatype=xsd['string'])
 
                 # Adding subingredients of an ingredient
                 foodGraph.add((ingredient, food['containsIngredient'], subing))
+                foodGraph.add((subing,rdf.type,food['Ingredient']))
                 foodGraph.add((subing, schema['name'], subIngredientName))
 
     # Adding the allergens
@@ -131,13 +134,13 @@ def get_url():
             return url
 
 
-def main():
+def buildGraph():
 
     # Check if there is a Turtle file
     # if yes, parse this file
     if Path('foodGraph.ttl').is_file():
         exists = True
-        foodGraph.parse('foodGraph.ttl')
+        foodGraph.parse('foodGraph.ttl', format='ttl')
     else:
         exists = False
 
@@ -151,15 +154,18 @@ def main():
             # else, fetch all information to this product and add it to the KG
             node = Literal(url, datatype=XSD['string'])
             if not (None, None, node) in foodGraph:
-                f = get_product(url)
-                buildKG(f)
+                fp = get_product(url)
+                addfoodProduct(fp)
         else:
-            f = get_product(url)
-            buildKG(f)
+            fp = get_product(url)
+            addfoodProduct(fp)
 
         serializeGraph()
         url = get_url()
 
 
-if __name__ == '__main__':
+def main():
+    buildGraph()
+
+if __name__=='__main__':
     main()

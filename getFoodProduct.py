@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-from rdflib.plugin import get
 import requests
 import re
 from googletrans import Translator
@@ -27,7 +26,7 @@ def get_allergies_table(soup):
 def get_allergens(soup, foodIngredients):
     allergen = list()
 
-    for index, ingredient in enumerate(foodIngredients):
+    for ingredient in foodIngredients:
 
         if ingredient.ingredient[:4].isupper() and not(any(char.isnumeric() for char in ingredient.ingredient[:4])):
             allergen.append(ingredient.ingredient)
@@ -50,7 +49,7 @@ def get_allergens(soup, foodIngredients):
                             allergen.append(sub)
 
     if allergen == list():
-        allergen = ['None']
+        allergen = table
 
     return allergen
 
@@ -70,7 +69,12 @@ def get_ingredients(soup):
 
         info = info.find_parent('div')
         contents = info.select("p")[0].select("p")[0].text
-        contents = contents[:contents.find('Kann')]
+        
+        if 'Kann' in contents:
+            contents = contents[:contents.find('Kann ')]
+            contents = contents[:contents.find('(Kann ')]
+        print(contents)
+        print()
 
         # Removing unneccary words and characters and words
         if 'Zutaten:' in contents:
@@ -84,30 +88,37 @@ def get_ingredients(soup):
             contents = contents.replace('}', ')')
         if ';' in contents:
             contents = contents.replace(';', ',')
-        if 'mit ' in contents:
-            contents = contents.replace('mit', '')
         if 'aus ' in contents:
-            contents = contents.replace('aus ', '')
-        if 'enthält ' in contents:
-            contents = contents.replace('enthält ', '')
-        if 'und ' in contents:
-            contents = contents.replace('und', ',')
+             contents = contents.replace('aus ', '')
+        if 'mit ' in contents:
+            contents = contents.replace('mit ', '')
+        if 'von ' in contents:
+            contents = contents.replace('von ', '')
         if 'mindestens ' in contents:
-            contents = contents.replace('mindestens', '')
+            contents = contents.replace('mindestens ', '')
+        if 'enthält ' in contents:
+            contents = contents.replace('enthält', '')
 
+       
         # Removing the percentages
         contents = re.sub(
             r'(\d\d,\d\d %|\d\d,\d %|\d,\d\d %|\d,\d %|\d %|\d\d %|\d\d\d %|\d\d,\d\d%|\d\d,\d%|\d,\d\d%|\d,\d%|\d%|\d\d%|\d\d\d%)', '', contents)
-
         contents = re.sub(r'[(][)]', '', contents)
 
-        # Extracting the ingredients by each character
+
+        # Extracting the ingredients  each character
         for index, content in enumerate(contents):
 
             if content in '*':
                 continue
 
-            if content == ':':
+            elif content =='.' and x==0 :
+                ingredients.append(ingredient.strip())
+
+            elif content =='-':
+                ingredient=''
+            
+            elif content == ':':
                 ingredient = ''
 
             elif (content != ',' and x <= 1) and (content != '(' and content != ')'):
@@ -142,9 +153,7 @@ def get_ingredients(soup):
             elif content == ')' and x > 1:
                 x -= 1
 
-        ingredients.append(ingredient.strip())
-
-   
+    
     # removing the empty entries
     ingredients = [x for x in ingredients if x]
 
@@ -313,4 +322,5 @@ def get_product(url):
     foodproduct.addAllergen(get_allergens(soup, foodproduct.ingredients))
 
     return foodproduct
+
 
