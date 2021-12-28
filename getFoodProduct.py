@@ -112,7 +112,7 @@ def get_ingredients(soup):
         if 'und ' in contents:
             contents = contents.replace('und', ',')
         if 'aus ' in contents:
-             contents = contents.replace('aus ', '')
+             contents = contents.replace('aus ', ':')
         if 'mit ' in contents:
             contents = contents.replace('mit ', '')
         if 'von ' in contents:
@@ -125,13 +125,10 @@ def get_ingredients(soup):
             contents = contents.replace('gemahlen','')
         if 'gehackt' in contents:
             contents = contents.replace('gehackt','')
-
-       
+    
         # Removing the percentages
-        contents = re.sub(
-            r'(\d\d,\d\d %|\d\d,\d %|\d,\d\d %|\d,\d %|\d %|\d\d %|\d\d\d %|\d\d,\d\d%|\d\d,\d%|\d,\d\d%|\d,\d%|\d%|\d\d%|\d\d\d%)', '', contents)
-        contents = re.sub(r'[(][)]', '', contents)
-
+        contents=re.sub(r'(\d+%|\d+.\d+%|\d+ %|\d+.\d+ %|\d+Prozent|\d+.\d+Prozent|\d+ Prozent|\d+.\d+ Prozent)','', contents)
+        contents = re.sub(r'[(][)]|[(] [)]', '', contents)
 
         # Extracting the ingredients  each character
         for index, content in enumerate(contents):
@@ -139,7 +136,7 @@ def get_ingredients(soup):
             if content in '*':
                 continue
 
-            elif content =='.' and x==0 :
+            elif (content =='.' and x==0) or index==len(contents) :
                 ingredients.append(ingredient.strip())
             
             elif content == ':':
@@ -177,7 +174,10 @@ def get_ingredients(soup):
             elif content == ')' and x > 1:
                 x -= 1
 
-    
+    # Adding the last ingredient if is not in the list 
+    if ingredient not in ingredients:
+        ingredients.append(ingredient.strip())
+
     # removing the empty entries
     ingredients = [x for x in ingredients if x]
 
@@ -304,6 +304,8 @@ def get_name(soup):
             name = name.split('-')[0]
         elif '|' in name:
             name = name.split('|')[0]
+        elif '-' in name:
+            name = name.split('-')[0]
     except:
         name = 'None'
 
