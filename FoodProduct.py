@@ -77,9 +77,9 @@ class foodProduct:
     def setCountry(self, country):
         self.country_of_origin = country
 
-    def addIngredient(self, ingredient):
+    def addIngredients(self, ingredient):
         
-        if type(ingredient) is list and self.ingredients=='None':
+        if (type(ingredient) is list and ingredient!=list())and self.ingredients=='None':
             self.ingredients = [foodIngredient()
                                 for i in range(len(ingredient))]
 
@@ -90,19 +90,30 @@ class foodProduct:
                 if type(value) is list:
                     self.ingredients[i].addIngredient(value[0])
                     value.remove(value[0])
-                    for j, value2 in enumerate(value):
+                    for value2 in value:
                         self.ingredients[i].addSubIngredient(value2)
 
-    def addAllergensToIngredients(self,allergens):
 
-        if type(allergens) is list and self.ingredients!='None':
-            addToIngredients=[foodIngredient()
-                                for i in range(len(allergens))]
-            for i, value in enumerate(allergens):
-                if type(value) is str:
-                    addToIngredients[i].addIngredient(value)
+    def addAllergenToIngredients(self,allergen):
+        ing=foodIngredient()
+        if type(allergen)==str:
+            ing.addIngredient(allergen)
+            self.ingredients.append(ing)
             
-            self.ingredients=self.ingredients+addToIngredients
+
+
+    def findIngredient(self,a):
+    
+        for i in self.ingredients:
+            if i.ingredient==a:
+               return True
+            if i.subingredient!=list():
+                for sub in i.subingredient:
+                    if sub==a:
+                        return True
+        return False
+            
+
   
 
     def addAllergen(self, allergen):

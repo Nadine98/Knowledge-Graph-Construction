@@ -1,5 +1,7 @@
+from types import NoneType
 from bs4 import BeautifulSoup
-import requests
+from selenium import webdriver
+
 import re
 from googletrans import Translator
 
@@ -9,34 +11,40 @@ from FoodProduct import nutritional_information
 
 def get_rating(soup):
     try:
-       review_score = soup.find('span',attrs={'class':'a-icon-alt'}).text.strip()
+        review_score = soup.find(
+            'span', attrs={'class': 'a-icon-alt'}).text.strip()
+        if 'Sternen' not in review_score:
+            review_score = 'None'
     except:
-        review_score='None'
+        review_score = 'None'
     return review_score
-  
-    
+
 
 def get_reviewNumber(soup):
     try:
-        reviewNumber= soup.find(
-                'span', attrs={'id': 'acrCustomerReviewText'}).text.strip().replace('.','')
-        reviewNumber=re.findall(r'\d+',reviewNumber)[0]
-        
+        reviewNumber = soup.find(
+            'span', attrs={'id': 'acrCustomerReviewText'}).text.strip().replace('.', '')
+        reviewNumber = re.findall(r'\d+', reviewNumber)[0]
+
     except:
-        reviewNumber='None'
-    
+        reviewNumber = 'None'
+
     return reviewNumber
-    
 
 
 def get_allergies_table(soup):
-    
-    allergen = ['None']
+
+    allergen = 'None'
 
     info = soup.find("th", text=" Allergie-Informationen ")
     if info:
         allergen = list()
         content = info.find_parent('tr').select("td")[0].text
+
+        if 'Kann' in content:
+            content = content.replace('Kann', '')
+            content = content.replace('enthalten', '')
+
         if ":" in content:
             allergen = [x.strip() for x in content.split(":")[1].split(",")]
         else:
@@ -48,54 +56,72 @@ def get_allergies_table(soup):
 def get_allergens(soup, foodIngredients):
     allergen = list()
 
+    if foodIngredients == 'None':
+        allergen = 'None'
+        return allergen
+
     for ingredient in foodIngredients:
 
-        if ingredient.ingredient[:4].isupper() and not(any(char.isnumeric() for char in ingredient.ingredient[:4])):
+        if re.search('.[A-Z][A-Z][A-Z]+.', ingredient.ingredient):
             allergen.append(ingredient.ingredient)
 
         if ingredient.subingredient:
             for sub in ingredient.subingredient:
-                if sub[:4].isupper() and not (any(char.isnumeric() for char in sub[:4])):
+                if re.search('.[A-Z][A-Z][A-Z]+.', sub):
                     allergen.append(sub)
 
     if allergen == list():
         table = get_allergies_table(soup)
 
-        for i in foodIngredients:
-            for a in table:
-                if a in i.ingredient:
+        
+        for a in table:
+            notIN=False
+
+            for i in foodIngredients:
+                if a.lower() in i.ingredient.lower():
+                    print(i.ingredient)
+                    notIN=True
                     allergen.append(i.ingredient)
-                if i.subingredient:
+
+                if i.subingredient !=list():
                     for sub in i.subingredient:
-                        if a in sub:
+                        if a.lower() in sub.lower():
+                            print(i.ingredient)
+                            notIN=True
                             allergen.append(sub)
 
-    if allergen == list():
-        allergen = 'None'
+            if notIN==False:
+                allergen.append(a)
+
+
+               
 
     return allergen
-
 
 
 def get_ingredients(soup):
     # Extract ingredients Bestandteile
 
     ingredients = 'None'
-    ingredient = ''
-
     info = soup.find("h4", text="Bestandteile")
+
     if info:
+        contents = info.find_parent('div').find_all('p')[1].text
+
+        # storing an ingredient --> Character by character
+        ingredient = ''
+        # List for storing the ingredients
         ingredients = list()
+        # List for subingredients of an ingredient
         subingredients = list()
+        # Variable for counting the brackets
         x = 0
 
-        info = info.find_parent('div')
-        contents = info.select("p")[0].select("p")[0].text
-        
         if 'Kann' in contents:
-            contents = contents[:contents.find('Kann ')]
-            contents = contents[:contents.find('(Kann ')]
-      
+            contents = contents.replace('(Kann', ',')
+            contents = contents.replace('Kann', '')
+            contents = contents.replace('enthalten', '')
+            contents = contents.replace('andere', '')
 
         # Removing unneccary words and characters and words
         if 'Zutaten:' in contents:
@@ -109,10 +135,12 @@ def get_ingredients(soup):
             contents = contents.replace('}', ')')
         if ';' in contents:
             contents = contents.replace(';', ',')
+        if '.' in contents:
+            contents = contents.replace('.', '')
         if 'und ' in contents:
             contents = contents.replace('und', ',')
         if 'aus ' in contents:
-             contents = contents.replace('aus ', ':')
+            contents = contents.replace('aus ', ':')
         if 'mit ' in contents:
             contents = contents.replace('mit ', '')
         if 'von ' in contents:
@@ -122,23 +150,21 @@ def get_ingredients(soup):
         if 'enthält ' in contents:
             contents = contents.replace('enthält', '')
         if 'gemahlen' in contents:
-            contents = contents.replace('gemahlen','')
+            contents = contents.replace('gemahlen', '')
         if 'gehackt' in contents:
-            contents = contents.replace('gehackt','')
-    
+            contents = contents.replace('gehackt', '')
+
         # Removing the percentages
-        contents=re.sub(r'(\d+%|\d+.\d+%|\d+ %|\d+.\d+ %|\d+Prozent|\d+.\d+Prozent|\d+ Prozent|\d+.\d+ Prozent)','', contents)
+        contents = re.sub(
+            r'(\d+%|\d+.\d+%|\d+ %|\d+.\d+ %|\d+Prozent|\d+.\d+Prozent|\d+ Prozent|\d+.\d+ Prozent)', '', contents)
         contents = re.sub(r'[(][)]|[(] [)]', '', contents)
 
-        # Extracting the ingredients  each character
+        # Extracting the ingredients by reading character by character
         for index, content in enumerate(contents):
 
             if content in '*':
                 continue
 
-            elif (content =='.' and x==0) or index==len(contents) :
-                ingredients.append(ingredient.strip())
-            
             elif content == ':':
                 ingredient = ''
 
@@ -174,35 +200,41 @@ def get_ingredients(soup):
             elif content == ')' and x > 1:
                 x -= 1
 
-    # Adding the last ingredient if is not in the list 
-    if ingredient not in ingredients:
-        ingredients.append(ingredient.strip())
+        # Adding the last ingredient if is not in the list
+        if ingredient not in ingredients:
+            ingredients.append(ingredient.strip())
 
-    # removing the empty entries
-    ingredients = [x for x in ingredients if x]
+        # Removing the empty entries
+        ingredients = [x for x in ingredients if x]
 
-    # removing empty lists
-    for i, x in enumerate(ingredients):
-        if type(x) is list and ('' in x or ' ' in x):
-            ingredients.remove(x)
+        # Removing empty lists
+        for i, x in enumerate(ingredients):
+            if type(x) is list and ('' in x or ' ' in x):
+                ingredients.remove(x)
 
     return ingredients
 
 
 def get_amazon_category(soup):
-    category = 'None'
+
     info = soup.find('div', attrs={'id': 'showing-breadcrumbs_div'})
-
     if info:
-        list = info.find('ul', attrs={
-                         'class': 'a-unordered-list a-horizontal a-size-small'}).find_all('li')
+        info = info.find(
+            'ul', attrs={'class': 'a-unordered-list a-horizontal a-size-small'})
 
-        for x in enumerate(list):
+        if info:
+            list = info.find_all('li')
 
-            if 'Lebensmittel & Getränke' in x[1].text:
-                # list[i]='Lebensmittel & Getränke', list[i+1]= '>' list[i+2]='Süßigkeiten & Knabbereien'
-                category = list[x[0]+2].text.strip()
-                break
+            for index, value in enumerate(list):
+                if 'Lebensmittel & Getränke' in value.text:
+                    # list[index]='Lebensmittel & Getränke'
+                    # list[index+1]= '>'
+                    # list[index+2]='Süßigkeiten & Knabbereien'
+                    category = list[index+2].text.strip()
+                    break
+    else:
+        category = 'None'
+
     return category
 
 
@@ -235,7 +267,7 @@ def get_nutritional_information(soup):
 
 
 def get_country(soup):
-    trans=Translator()
+    trans = Translator()
 
     country = 'None'
     info = soup.find('h5', text='Allgemeine Produktinformationen')
@@ -248,20 +280,19 @@ def get_country(soup):
                 country = table_rows[td[0]].td.text
                 country = country.replace('\u200e', '').strip()
                 break
-        
-        if country!='None':
-          country=trans.translate(country, dest='de').text
 
-        if country=='Vereinigte Staaten':
-            country='USA'
-        if country=='Vereinigte Königreich' or country=='Vereinigtes Königreich':
-            country='UK'
+        if country != 'None':
+            country = trans.translate(country, dest='de').text
+
+        if country == 'Vereinigte Staaten':
+            country = 'USA'
+        if country == 'Vereinigte Königreich' or country == 'Vereinigtes Königreich':
+            country = 'UK'
 
     return country
 
 
 def get_brand(soup):
-    brand = 'None'
     info = soup.find('h5', text='Allgemeine Produktinformationen')
 
     if info:
@@ -271,6 +302,9 @@ def get_brand(soup):
             if 'Marke' in td[1].text:
                 brand = table_rows[td[0]].td.text
                 brand = brand.replace('\u200e', '').strip()
+    else:
+        brand = 'None'
+
     return brand
 
 
@@ -285,7 +319,6 @@ def get_price(soup):
 
 
 def get_description(soup):
-
     try:
         description = soup.find(id='productTitle').get_text().strip()
     except:
@@ -300,12 +333,13 @@ def get_name(soup):
         name = soup.find(id='productTitle').get_text().strip()
         if ',' in name:
             name = name.split(',')[0]
-        elif '-' in name:
+        if '-' in name:
             name = name.split('-')[0]
-        elif '|' in name:
+        if '|' in name:
             name = name.split('|')[0]
-        elif '-' in name:
+        if '-' in name:
             name = name.split('-')[0]
+
     except:
         name = 'None'
 
@@ -314,17 +348,20 @@ def get_name(soup):
 
 def get_soup(url):
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'
-    }
-    page = requests.get(url, headers=headers)
-    soup = BeautifulSoup(page.content, 'html.parser')
+    driver = webdriver.Chrome(
+        executable_path='C:\Program Files (x86)\chromedriver.exe')
+    driver.get(url,)
+    source = driver.page_source
+    driver.quit()
+
+    soup = BeautifulSoup(source, 'html.parser')
 
     return soup
 
 
 def get_ASIN(url):
-    asin = url.split('/dp/')[1].split('/')[0]
+    asin = url.split('/dp/')[1]
+    asin=asin[:10]
     return asin
 
 
@@ -344,18 +381,17 @@ def get_product(url):
     foodproduct.setCountry(get_country(soup))
     foodproduct.set_nutritional_information(get_nutritional_information(soup))
     foodproduct.setCategory(get_amazon_category(soup))
-    foodproduct.addIngredient(get_ingredients(soup))
-    
-    allergens=get_allergens(soup,foodproduct.ingredients)
-    if allergens =='None':
-        allergens=get_allergies_table(soup)
-    
-    foodproduct.addAllergen(allergens)
-    foodproduct.addAllergensToIngredients(allergens)
-
     foodproduct.set_reviewNumber(get_reviewNumber(soup))
     foodproduct.set_rating(get_rating(soup))
+    foodproduct.addIngredients(get_ingredients(soup))
+
+    if foodproduct.ingredients == 'None':
+        foodproduct.addAllergen(get_allergies_table(soup))
+    else:
+        foodproduct.addAllergen(get_allergens(soup, foodproduct.ingredients))
+
+    for a in foodproduct.allergen:
+        if not(foodproduct.findIngredient(a)):
+            foodproduct.addAllergenToIngredients(a)
 
     return foodproduct
-
-

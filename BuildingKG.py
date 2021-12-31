@@ -1,5 +1,3 @@
-
-from FoodProduct import foodProduct, nutritional_information
 from getFoodProduct import get_product
 from pathlib import Path
 
@@ -8,105 +6,10 @@ from rdflib.namespace import Namespace, RDF, SDO, XSD, RDFS, URIPattern
 
 foodGraph = Graph()
 
+
 def serializeGraph():
     foodGraph.serialize('foodGraph.ttl', format='ttl')
 
-'''def cleanData():
-    food = Namespace('http://data.lirmm.fr/ontologies/food#')
-
-    # Removing missing data --> indicated with None or none
-    # Removing unsed blank node for the nutritions
-    for s,p,o in foodGraph:
-        if type(o) is BNode and not((o,None,None)in foodGraph):
-            foodGraph.remove((s,p,o))
-        
-        if 'None' in o or 'none' in o:
-            foodGraph.remove((s,p,o))
-            foodGraph.remove((o,None,None))
-
-    
-    
-
-    print('\nRemoving unnecessary data from the ingredients')
-    while 1: 
-        s=None
-        o=str(input('\nEnter the unneccesarry ingredient: '))
-
-        
-        if o =='':
-             break
-    
-        o=Literal(o,datatype=XSD['string'])
-        if o in foodGraph.objects():
-
-            for (sub,pre,obj) in foodGraph:
-                if obj==o:
-                    s=sub
-                    break
-
-            foodGraph.remove((s,None,None))
-            foodGraph.remove((None,None,s))
-            serializeGraph() 
-        else:
-            print('ingredient,o.value ,does not exist in KG')
-    
-    # Removing incorrect data --> in ingredients
-    print('\n\nRemoving incorrect data from the ingredients')
-   
-    while 1:
-        s=None
-        p=None
-        
-        fooproduct =None 
-        ingredient=None
-        containsIngredient=None
-
-        old=str(input('\nEnter the incoorect ingredient: '))
-
-        if old =='':
-            break
-        
-        o=Literal(old,datatype=XSD['string'])
-
-        if o in foodGraph.objects():
-            for sub,pre,obj in foodGraph:
-                if o==obj:
-                    s=sub
-                    p=pre
-                    break
-               
-            newO=str(input('\nEnter the coorect ingredient: '))
-            newO=Literal(newO,datatype=XSD['string'])
-
-    
-
-            for sub,pre,obj in foodGraph:
-                if obj==s:
-                    foodGraph.remove((None,None,s))
-                    foodGraph.remove((s,None,None))
-
-                    ingredient=s.rstrip(old.lower().replace(' ',''))
-                    print(ingredient)
-                    ingredient=ingredient+newO.value.lower().replace(' ','')
-
-                    ingredient=URIRef(ingredient)
-                    containsIngredient=pre
-                    foodproduct=sub
-
-                    foodGraph.add((foodproduct,containsIngredient,ingredient))
-                    foodGraph.add((ingredient,RDF.type,food['Ingredient']))
-                    foodGraph.add((ingredient,RDFS.label,newO))
-                    serializeGraph()
-
-                    break
-        
-        
-        else: 
-            print('ingredient does not exist')
-            continue'''
-
-
-   
 
 def addfoodProduct(fproduct):
 
@@ -162,7 +65,6 @@ def addfoodProduct(fproduct):
     foodGraph.add((country, rdfs.label, countryName))
 
     # Creating nodes for the nuritional information
-
     nutritionalFacts = BNode(value='nutritional Information of'+fproduct.asin)
     servingSize = Literal(fproduct.nutritional_information.servingSize)
     fats = Literal(fproduct.nutritional_information.fats)
@@ -184,45 +86,49 @@ def addfoodProduct(fproduct):
     ingr = Namespace('https://example.org/food/'+fproduct.asin+'/ingredient/')
     foodGraph.bind('ing', ingr)
 
-    for i in fproduct.ingredients:
-        # Creating the nodes for the ingredient
-        ingredient = URIRef(ingr[i.ingredient.lower().replace(' ', '')])
-        ingredientName = Literal(
-            i.ingredient.lower().title(), datatype=xsd['string'])
+    if fproduct.ingredients != 'None':
+        for i in fproduct.ingredients:
+            # Creating the nodes for the ingredient
+            ingredient = URIRef(ingr[i.ingredient.lower().replace(' ', '')])
+            ingredientName = Literal(
+                i.ingredient.lower().title(), datatype=xsd['string'])
 
-        # Adding the ingredient to the graph
-        foodGraph.add((foodproduct, food['containsIngredient'], ingredient))
-        foodGraph.add((ingredient, rdf.type, food['Ingredient']))
-        foodGraph.add((ingredient, rdfs.label, ingredientName))
+            # Adding the ingredient to the graph
+            foodGraph.add(
+                (foodproduct, food['containsIngredient'], ingredient))
+            foodGraph.add((ingredient, rdf.type, food['Ingredient']))
+            foodGraph.add((ingredient, rdfs.label, ingredientName))
 
-        if i.subingredient:
+            if i.subingredient:
 
-            # Creating the nodes for the subingredients
-            for sub in i.subingredient:
-                subing = URIRef(ingr[sub.lower().replace(' ', '')])
-                subIngredientName = Literal(
-                    sub.lower().title(), datatype=xsd['string'])
+                # Creating the nodes for the subingredients
+                for sub in i.subingredient:
+                    subing = URIRef(ingr[sub.lower().replace(' ', '')])
+                    subIngredientName = Literal(
+                        sub.lower().title(), datatype=xsd['string'])
 
-                # Adding subingredients of an ingredient
-                foodGraph.add((ingredient, food['containsIngredient'], subing))
-                foodGraph.add((subing, rdf.type, food['Ingredient']))
-                foodGraph.add((subing, rdfs.label, subIngredientName))
+                    # Adding subingredients of an ingredient
+                    foodGraph.add(
+                        (ingredient, food['containsIngredient'], subing))
+                    foodGraph.add((subing, rdf.type, food['Ingredient']))
+                    foodGraph.add((subing, rdfs.label, subIngredientName))
 
-    # Adding the class allergen
-    allergen = URIRef(dbpediaResource['Allergen'])
-    foodGraph.add((allergen, rdfs.label, Literal('Allergen', lang='de')))
+        # Adding the class allergen
+        allergen = URIRef(dbpediaResource['Allergen'])
+        foodGraph.add((allergen, rdfs.label, Literal('Allergen', lang='de')))
 
-    # Adding the allergens from the ingredients
-    for a in fproduct.allergen:
-        allergy = URIRef(ingr[a.lower().replace(' ', '')])
-        foodGraph.add((allergy, rdf.type, allergen))
+        # Adding the allergens from the ingredients
+        for a in fproduct.allergen:
+            if a == 'None':
+                break
+            allergy = URIRef(ingr[a.lower().replace(' ', '')])
+            foodGraph.add((allergy, rdf.type, allergen))
 
     # Add the rating and the reviewNumber
     foodGraph.add((foodproduct, schema['ratingValue'], Literal(
         fproduct.rating, datatype=xsd['string'])))
     foodGraph.add((foodproduct, schema['reviewCount'], Literal(
         fproduct.reviewNumber, datatype=xsd['nonNegativeInteger'])))
-
 
 
 def get_url():
@@ -251,7 +157,7 @@ def buildGraph():
         exists = False
 
    # Fetch the url from the input stream
-   # Break the process if enter an empty url
+   # Break the process if the user enter an empty url
     url = get_url()
     while url != '':
         if exists:
