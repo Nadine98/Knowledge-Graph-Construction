@@ -39,72 +39,71 @@ class foodIngredient:
 class foodProduct:
 
     def __init__(self):
-        self.name = 'None'
-        self.description='None'
-        self.brand ='None'
-        self.price = 'None'
-        self.asin = 'None'
-        self.url = 'None'
-        self.category = 'None'
-        self.country_of_origin = 'None'
-        self.ingredients = 'None'
-        self.allergen = 'None'
-        self.nutritional_information = nutritional_information()
-        self.reviewNumber='None'
-        self.rating='None'
+        self.__name = 'None'
+        self.__description='None'
+        self.__brand ='None'
+        self.__price = 'None'
+        self.__asin = 'None'
+        self.__url = 'None'
+        self.__category = 'None'
+        self.__country_of_origin = 'None'
+        self.__ingredients = 'None'
+        self.__allergen = 'None'
+        self.__nutritional_information = nutritional_information()
+        self.__reviewNumber='None'
+        self.__rating='None'
 
     def setName(self, name):
-        self.name = name
+        self.__name = name
 
     def setDecription(self, description):
-        self.description=description
+        self.__description=description
 
     def setBrand(self, brand):
-        self.brand = brand
+        self.__brand = brand
 
     def setPrice(self, price):
-        self.price = price
+        self.__price = price
 
     def setAsin(self, asin):
-        self.asin = asin
+        self.__asin = asin
 
     def setUrl(self, url):
-        self.url = url
+        self.__url = url
 
     def setCategory(self, category):
-        self.category = category
+        self.__category = category
 
     def setCountry(self, country):
-        self.country_of_origin = country
+        self.__country_of_origin = country
 
-    def addIngredients(self, ingredient):
+    def setIngredients(self, ingredient):
         
-        if (type(ingredient) is list and ingredient!=list())and self.ingredients=='None':
-            self.ingredients = [foodIngredient()
+        if (type(ingredient) is list and ingredient!=list())and self.__ingredients=='None':
+            self.__ingredients = [foodIngredient()
                                 for i in range(len(ingredient))]
 
             for i, value in enumerate(ingredient):
                 if type(value) is str:
-                    self.ingredients[i].addIngredient(value)
+                    self.__ingredients[i].addIngredient(value)
 
                 if type(value) is list:
-                    self.ingredients[i].addIngredient(value[0])
+                    self.__ingredients[i].addIngredient(value[0])
                     value.remove(value[0])
                     for value2 in value:
-                        self.ingredients[i].addSubIngredient(value2)
+                        self.__ingredients[i].addSubIngredient(value2)
 
 
     def addAllergenToIngredients(self,allergen):
         ing=foodIngredient()
         if type(allergen)==str:
             ing.addIngredient(allergen)
-            self.ingredients.append(ing)
+            self.__ingredients.append(ing)
             
-
 
     def findIngredient(self,a):
     
-        for i in self.ingredients:
+        for i in self.__ingredients:
             if i.ingredient==a:
                return True
             if i.subingredient!=list():
@@ -114,20 +113,60 @@ class foodProduct:
         return False
             
 
-  
-
-    def addAllergen(self, allergen):
-        self.allergen=list()
+    def setAllergens(self, allergen):
+        self.__allergen=list()
         if type(allergen) is foodIngredient:
             allergen = [allergen.ingredient]
-        self.allergen.extend(allergen)
+        self.__allergen.extend(allergen)
 
-    def set_nutritional_information(self, nutrition):
+    def setNritional_information(self, nutrition):
         if type(nutrition) is nutritional_information:
-            self.nutritional_information = nutrition
+            self.__nutritional_information = nutrition
 
-    def set_reviewNumber(self, number):
-        self.reviewNumber=number
+    def setReviewNumber(self, number):
+        self.__reviewNumber=number
     
-    def set_rating(self,rating):
-        self.rating=rating
+    def setRating(self,rating):
+        self.__rating=rating
+
+
+
+# Getter-Methods
+    def getName(self):
+        return self.__name
+
+    def getDescription(self):
+        return self.__description
+
+    def getBrand(self):
+        return  self.__brand
+
+    def getPrice(self):
+        return self.__price
+
+    def getAsin(self):
+        return self.__asin 
+
+    def getUrl(self):
+        return self.__url
+
+    def getCategory(self):
+        return self.__category 
+
+    def getCountry(self):
+        return self.__country_of_origin
+
+    def getNutritional_information(self):
+        return self.__nutritional_information
+
+    def getReviewNumber(self):
+        return self.__reviewNumber
+    
+    def getRating(self):
+        return self.__rating
+
+    def getIngredients(self):
+        return self.__ingredients
+    
+    def getAllergens(self):
+        return self.__allergen

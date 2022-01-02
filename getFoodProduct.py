@@ -9,7 +9,7 @@ from FoodProduct import foodProduct
 from FoodProduct import nutritional_information
 
 
-def get_rating(soup):
+def rating(soup):
     try:
         review_score = soup.find(
             'span', attrs={'class': 'a-icon-alt'}).text.strip()
@@ -20,7 +20,7 @@ def get_rating(soup):
     return review_score
 
 
-def get_reviewNumber(soup):
+def reviewNumber(soup):
     try:
         reviewNumber = soup.find(
             'span', attrs={'id': 'acrCustomerReviewText'}).text.strip().replace('.', '')
@@ -32,7 +32,7 @@ def get_reviewNumber(soup):
     return reviewNumber
 
 
-def get_allergies_table(soup):
+def allergies_table(soup):
 
     allergen = 'None'
 
@@ -53,7 +53,7 @@ def get_allergies_table(soup):
     return allergen
 
 
-def get_allergens(soup, foodIngredients):
+def allergens(soup, foodIngredients):
     allergen = list()
 
     if foodIngredients == 'None':
@@ -99,7 +99,7 @@ def get_allergens(soup, foodIngredients):
     return allergen
 
 
-def get_ingredients(soup):
+def ingredients(soup):
     # Extract ingredients Bestandteile
 
     ingredients = 'None'
@@ -215,7 +215,7 @@ def get_ingredients(soup):
     return ingredients
 
 
-def get_amazon_category(soup):
+def amazon_category(soup):
 
     info = soup.find('div', attrs={'id': 'showing-breadcrumbs_div'})
     if info:
@@ -238,7 +238,7 @@ def get_amazon_category(soup):
     return category
 
 
-def get_nutritional_information(soup):
+def nutritionalInformation(soup):
     nutritionalInformation = nutritional_information()
     info = soup.find('h5', text='Nährwertangaben')
 
@@ -266,7 +266,7 @@ def get_nutritional_information(soup):
     return nutritionalInformation
 
 
-def get_country(soup):
+def country(soup):
     trans = Translator()
 
     country = 'None'
@@ -292,7 +292,7 @@ def get_country(soup):
     return country
 
 
-def get_brand(soup):
+def brand(soup):
     info = soup.find('h5', text='Allgemeine Produktinformationen')
 
     if info:
@@ -308,7 +308,7 @@ def get_brand(soup):
     return brand
 
 
-def get_price(soup):
+def price(soup):
     try:
         price = soup.find(
             'span', attrs={'class': 'a-offscreen'}).text.strip()
@@ -318,7 +318,7 @@ def get_price(soup):
     return price
 
 
-def get_description(soup):
+def description(soup):
     try:
         description = soup.find(id='productTitle').get_text().strip()
     except:
@@ -327,7 +327,7 @@ def get_description(soup):
     return description
 
 
-def get_name(soup):
+def name(soup):
 
     try:
         name = soup.find(id='productTitle').get_text().strip()
@@ -370,27 +370,28 @@ def get_product(url):
     foodproduct = foodProduct()
 
     foodproduct.setUrl(url)
-    foodproduct.setAsin(get_ASIN(foodproduct.url))
+    foodproduct.setAsin(get_ASIN(foodproduct.getUrl()))
 
-    soup = get_soup(foodproduct.url)
+    soup = get_soup(foodproduct.getUrl())
 
-    foodproduct.setName(get_name(soup))
-    foodproduct.setDecription(get_description(soup))
-    foodproduct.setPrice(get_price(soup))
-    foodproduct.setBrand(get_brand(soup))
-    foodproduct.setCountry(get_country(soup))
-    foodproduct.set_nutritional_information(get_nutritional_information(soup))
-    foodproduct.setCategory(get_amazon_category(soup))
-    foodproduct.set_reviewNumber(get_reviewNumber(soup))
-    foodproduct.set_rating(get_rating(soup))
-    foodproduct.addIngredients(get_ingredients(soup))
+    foodproduct.setName(name(soup))
+    foodproduct.setDecription(description(soup))
+    foodproduct.setPrice(price(soup))
+    foodproduct.setBrand(brand(soup))
+    foodproduct.setCountry(country(soup))
+    foodproduct.setNritional_information(nutritionalInformation(soup))
+    foodproduct.setCategory(amazon_category(soup))
+    foodproduct.setReviewNumber(reviewNumber(soup))
+    foodproduct.setRating(rating(soup))
+    foodproduct.setIngredients(ingredients(soup))
+   
 
-    if foodproduct.ingredients == 'None':
-        foodproduct.addAllergen(get_allergies_table(soup))
+    if foodproduct.getIngredients() == 'None':
+        foodproduct.setAllergens(allergies_table(soup))
     else:
-        foodproduct.addAllergen(get_allergens(soup, foodproduct.ingredients))
+        foodproduct.setAllergens(allergens(soup, foodproduct.getIngredients()))
 
-    for a in foodproduct.allergen:
+    for a in foodproduct.getAllergens():
         if not(foodproduct.findIngredient(a)):
             foodproduct.addAllergenToIngredients(a)
 

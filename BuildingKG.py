@@ -40,16 +40,16 @@ def addfoodProduct(fproduct):
     foodGraph.bind('xsd', xsd)
 
     # Creating nodes for the general information
-    country = URIRef(dbpediaResource[fproduct.country_of_origin])
-    foodproduct = URIRef(ex[fproduct.asin])
-    description = Literal(fproduct.description, datatype=xsd['string'])
-    name = Literal(fproduct.name, datatype=xsd['string'])
-    brand = Literal(fproduct.brand, datatype=xsd['string'])
-    price = Literal(fproduct.price, datatype=xsd['string'])
-    asin = Literal(fproduct.asin, datatype=xsd['string'])
-    url = Literal(fproduct.url, datatype=xsd['string'])
-    category = Literal(fproduct.category, datatype=xsd['string'])
-    countryName = Literal(fproduct.country_of_origin, lang='de')
+    country = URIRef(dbpediaResource[fproduct.getCountry()])
+    foodproduct = URIRef(ex[fproduct.getAsin()])
+    description = Literal(fproduct.getDescription(), datatype=xsd['string'])
+    name = Literal(fproduct.getName(), datatype=xsd['string'])
+    brand = Literal(fproduct.getBrand(), datatype=xsd['string'])
+    price = Literal(fproduct.getPrice(), datatype=xsd['string'])
+    asin = Literal(fproduct.getAsin(), datatype=xsd['string'])
+    url = Literal(fproduct.getUrl(), datatype=xsd['string'])
+    category = Literal(fproduct.getCategory(), datatype=xsd['string'])
+    countryName = Literal(fproduct.getCountry(), lang='de')
 
     # Adding the nodes for general information
     foodGraph.add((foodproduct, rdf.type, food['FoodProduct']))
@@ -65,11 +65,11 @@ def addfoodProduct(fproduct):
     foodGraph.add((country, rdfs.label, countryName))
 
     # Creating nodes for the nuritional information
-    nutritionalFacts = BNode(value='nutritional Information of'+fproduct.asin)
-    servingSize = Literal(fproduct.nutritional_information.servingSize)
-    fats = Literal(fproduct.nutritional_information.fats)
-    carbohydrates = Literal(fproduct.nutritional_information.carbohydrates)
-    proteins = Literal(fproduct.nutritional_information.protein)
+    nutritionalFacts = BNode(value='nutritional Information of'+fproduct.getAsin())
+    servingSize = Literal(fproduct.getNutritional_information().servingSize)
+    fats = Literal(fproduct.getNutritional_information().fats)
+    carbohydrates = Literal(fproduct.getNutritional_information().carbohydrates)
+    proteins = Literal(fproduct.getNutritional_information().protein)
 
    # Adding the nutritional information
     foodGraph.add((foodproduct, schema['nutrition'], nutritionalFacts))
@@ -83,11 +83,11 @@ def addfoodProduct(fproduct):
         (nutritionalFacts, nutritionalInformation['carbohydrateContent'], carbohydrates))
 
     # Adding the ingredients and its subingredients
-    ingr = Namespace('https://example.org/food/'+fproduct.asin+'/ingredient/')
+    ingr = Namespace('https://example.org/food/'+fproduct.getAsin()+'/ingredient/')
     foodGraph.bind('ing', ingr)
 
-    if fproduct.ingredients != 'None':
-        for i in fproduct.ingredients:
+    if fproduct.getIngredients() != 'None':
+        for i in fproduct.getIngredients():
             # Creating the nodes for the ingredient
             ingredient = URIRef(ingr[i.ingredient.lower().replace(' ', '')])
             ingredientName = Literal(
@@ -118,17 +118,15 @@ def addfoodProduct(fproduct):
         foodGraph.add((allergen, rdfs.label, Literal('Allergen', lang='de')))
 
         # Adding the allergens from the ingredients
-        for a in fproduct.allergen:
-            if a == 'None':
-                break
+        for a in fproduct.getAllergens():
             allergy = URIRef(ingr[a.lower().replace(' ', '')])
             foodGraph.add((allergy, rdf.type, allergen))
 
     # Add the rating and the reviewNumber
     foodGraph.add((foodproduct, schema['ratingValue'], Literal(
-        fproduct.rating, datatype=xsd['string'])))
+        fproduct.getRating(), datatype=xsd['string'])))
     foodGraph.add((foodproduct, schema['reviewCount'], Literal(
-        fproduct.reviewNumber, datatype=xsd['nonNegativeInteger'])))
+        fproduct.getReviewNumber(), datatype=xsd['nonNegativeInteger'])))
 
 
 def get_url():
