@@ -1,0 +1,876 @@
+@prefix : <https://example.org/food/> .
+@prefix dbr: <http://de.dbpedia.org/resource/> .
+@prefix food: <http://data.lirmm.fr/ontologies/food#> .
+@prefix ing: <https://example.org/food/ingredient/> .
+@prefix ingWithSub: <https://example.org/food/B07QG35J1S/ingredient/> .
+@prefix ingWithSub1: <https://example.org/food/B082VP5MLZ/ingredient/> .
+@prefix ingWithSub2: <https://example.org/food/B085Y26ZRW/ingredient/> .
+@prefix ingWithSub3: <https://example.org/food/B08GGVZ2S9/ingredient/> .
+@prefix ingWithSub4: <https://example.org/food/B083Y3C5JC/ingredient/> .
+@prefix ingWithSub5: <https://example.org/food/B07KHJF8DR/ingredient/> .
+@prefix ingWithSub6: <https://example.org/food/B00QKW7MSA/ingredient/> .
+@prefix ip: <https://schema.org/IndividualProduct#> .
+@prefix ni: <https://schema.org/NutritionInformation#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:B005O868FY a food:FoodProduct ;
+    food:containsIngredient ing:aroma,
+        ing:e450,
+        ing:gelatine,
+        ing:glukosesirup,
+        ing:maisstärke,
+        ing:wasser,
+        ing:zucker ;
+    schema:isBasedOn "https://www.amazon.de/Rocky-Mountain-Marshmallows-Classic/dp/B005O868FY/ref=sr_1_12?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1V65EC2S0OCRX&keywords=Rocky+Mountain+Marshmallows+Minis&qid=1641371088&s=grocery&sprefix=rocky+mountain+marshmallows+minis+%2Cgrocery%2C96&sr=1-12"^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "79 Gramm" ;
+            ni:fatContent "0 Gramm" ;
+            ni:proteinContent "2 Gramm" ;
+            ni:servingSize "100 Gramm, 100 Gramm" ] ;
+    schema:ratingValue "4,4 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "48"^^xsd:nonNegativeInteger ;
+    ip:brand "Rocky Mountain"^^xsd:string ;
+    ip:category "Koch- & Backzutaten"^^xsd:string ;
+    ip:countryOfOrigin dbr:USA ;
+    ip:description "Rocky Mountain Marshmallows 300G"^^xsd:string ;
+    ip:name "Rocky Mountain Marshmallows 300G"^^xsd:string ;
+    ip:productID "B005O868FY"^^xsd:string ;
+    ip:url "https://www.amazon.de/Rocky-Mountain-Marshmallows-Classic/dp/B005O868FY/ref=sr_1_12?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1V65EC2S0OCRX&keywords=Rocky+Mountain+Marshmallows+Minis&qid=1641371088&s=grocery&sprefix=rocky+mountain+marshmallows+minis+%2Cgrocery%2C96&sr=1-12"^^xsd:string .
+
+:B00QKW7MSA a food:FoodProduct ;
+    food:containsIngredient ingWithSub6:jodsalz,
+        ing:apfelpüree,
+        ing:basilikum,
+        ing:karotten,
+        ing:knoblauch,
+        ing:oregano,
+        ing:petersilie,
+        ing:pfeffer,
+        ing:rapsöl,
+        ing:rindfleisch,
+        ing:sellerie,
+        ing:stärke,
+        ing:tomatenmark,
+        ing:wasser,
+        ing:zwiebeln ;
+    schema:isBasedOn "https://www.amazon.de/Alete-bewusst-Pasta-Sauce-Bolognese-Jahr/dp/B00QKW7MSA/ref=sr_1_1_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1CEAQ552WPON7&keywords=Alete+Bio+Gl%C3%A4schen+Tomaten-Frischk%C3%A4se-Nudeln&qid=1641374735&s=grocery&sprefix=alete+bio+gl%C3%A4schen+tomaten-frischk%C3%A4se-nudeln%2Cgrocery%2C134&sr=1-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEzOExXWkM0UVU4VlhUJmVuY3J5cHRlZElkPUEwOTU5NDE1UUQwNjZPRDBERjM4JmVuY3J5cHRlZEFkSWQ9QTA2NjEwMTJLODIzVjdWWFJTMzcmd2lkZ2V0TmFtZT1zcF9hdGYmYWN0aW9uPWNsaWNrUmVkaXJlY3QmZG9Ob3RMb2dDbGljaz10cnVl"^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "5.4 Gramm" ;
+            ni:fatContent "0.9 Gramm" ;
+            ni:proteinContent "4.6 Gramm" ;
+            ni:servingSize "100 ml" ] ;
+    schema:ratingValue "4,7 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "4"^^xsd:nonNegativeInteger ;
+    ip:brand "Alete"^^xsd:string ;
+    ip:category "Babykost"^^xsd:string ;
+    ip:countryOfOrigin dbr:Deutschland ;
+    ip:description "Alete bewusst Bio Pasta-Sauce Bolognese, ab 1 Jahr, Bio Tomatensauce mit 20 % Rindfleisch, ideale Ergänzung zu Nudeln, Gemüse- & Reisgerichten, ohne Aromastoffe, glutenfrei, 250 ml"^^xsd:string ;
+    ip:name "Alete bewusst Bio Pasta"^^xsd:string ;
+    ip:price "2,65€"^^xsd:string ;
+    ip:productID "B00QKW7MSA"^^xsd:string ;
+    ip:url "https://www.amazon.de/Alete-bewusst-Pasta-Sauce-Bolognese-Jahr/dp/B00QKW7MSA/ref=sr_1_1_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1CEAQ552WPON7&keywords=Alete+Bio+Gl%C3%A4schen+Tomaten-Frischk%C3%A4se-Nudeln&qid=1641374735&s=grocery&sprefix=alete+bio+gl%C3%A4schen+tomaten-frischk%C3%A4se-nudeln%2Cgrocery%2C134&sr=1-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEzOExXWkM0UVU4VlhUJmVuY3J5cHRlZElkPUEwOTU5NDE1UUQwNjZPRDBERjM4JmVuY3J5cHRlZEFkSWQ9QTA2NjEwMTJLODIzVjdWWFJTMzcmd2lkZ2V0TmFtZT1zcF9hdGYmYWN0aW9uPWNsaWNrUmVkaXJlY3QmZG9Ob3RMb2dDbGljaz10cnVl"^^xsd:string .
+
+:B01M3VDMT2 a food:FoodProduct ;
+    food:containsIngredient ing:dinkelmehl,
+        ing:dinkelvollkornschrot,
+        ing:hefe,
+        ing:koriander,
+        ing:meersalz,
+        ing:palmfett ;
+    schema:isBasedOn "https://www.amazon.de/Alnatura-Bio-Dinkel-Zwieback-200-g/dp/B01M3VDMT2/ref=sr_1_2?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2IPUFOV5P21PO&keywords=Alnatura+Bio+Dinkel-Zwieback&qid=1641371691&s=grocery&sprefix=alnatura+bio+dinkel-zwieback%2Cgrocery%2C117&sr=1-2"^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "67 Gramm" ;
+            ni:fatContent "3,6 Gramm" ;
+            ni:proteinContent "12 Gramm" ;
+            ni:servingSize "100 Gramm" ] ;
+    schema:ratingValue "4,4 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "188"^^xsd:nonNegativeInteger ;
+    ip:brand "Alnatura"^^xsd:string ;
+    ip:category "Brot & Backwaren"^^xsd:string ;
+    ip:description "Alnatura Bio Dinkel-Zwieback, 200g"^^xsd:string ;
+    ip:name "Alnatura Bio Dinkel"^^xsd:string ;
+    ip:price "1,79€"^^xsd:string ;
+    ip:productID "B01M3VDMT2"^^xsd:string ;
+    ip:url "https://www.amazon.de/Alnatura-Bio-Dinkel-Zwieback-200-g/dp/B01M3VDMT2/ref=sr_1_2?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2IPUFOV5P21PO&keywords=Alnatura+Bio+Dinkel-Zwieback&qid=1641371691&s=grocery&sprefix=alnatura+bio+dinkel-zwieback%2Cgrocery%2C117&sr=1-2"^^xsd:string .
+
+:B07KHJF8DR a food:FoodProduct ;
+    food:containsIngredient ingWithSub5:antioxidationsmittel,
+        ingWithSub5:emulgator,
+        ingWithSub5:galactooligosaccharide,
+        ingWithSub5:laktose,
+        ingWithSub5:molkeneiweiß,
+        ingWithSub5:molkenerzeugnis,
+        ingWithSub5:pflanzlicheöle,
+        ing:biotin,
+        ing:calciumcarbonat,
+        ing:calciumorthophosphat,
+        ing:cholinchlorid,
+        ing:eisen-ii-sulfat,
+        ing:fische,
+        ing:fischöl,
+        ing:folsäure,
+        ing:fructooligosaccharide,
+        ing:inositol,
+        ing:kaliumchlorid,
+        ing:kaliumcitrat,
+        ing:kaliumjodid,
+        ing:kupfersulfat,
+        ing:l-carnitin,
+        ing:l-tryptophan,
+        ing:magermilch,
+        ing:magnesiumchlorid,
+        ing:mangan-ii-sulfat,
+        ing:mortierellaalpina,
+        ing:natriumchlorid,
+        ing:natriumcitrat,
+        ing:natriumselenit,
+        ing:niacin,
+        ing:pantothensäure,
+        ing:sojabohnen,
+        ing:vitamina,
+        ing:vitaminb1,
+        ing:vitaminb12,
+        ing:vitaminb2,
+        ing:vitaminb6,
+        ing:vitaminc,
+        ing:vitamind,
+        ing:vitamine,
+        ing:vitamink,
+        ing:zinksulfat ;
+    schema:isBasedOn "https://www.amazon.de/Aptamil-Pronutra-ADVANCE-PRE-Anfangsmilch-Geburt/dp/B07KHJF8DR/ref=sr_1_2_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=FLF4WF6OG75S&keywords=Aptamil+Pronutra+PRE&qid=1641373692&s=grocery&sprefix=aptamil+pronutra+pre%2Cgrocery%2C110&sr=1-2-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEyS04zVkJLRU1QUkVaJmVuY3J5cHRlZElkPUEwMjIxMzY0UkNHUVBOV1ZKRFQ0JmVuY3J5cHRlZEFkSWQ9QTAwOTQ4NTUxMFNEQzBOMlhZMkVYJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ=="^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "7.3 Gramm" ;
+            ni:fatContent "1.5 Gramm" ;
+            ni:proteinContent "1.3 Gramm" ;
+            ni:servingSize "100 ml" ] ;
+    schema:ratingValue "4,6 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "1530"^^xsd:nonNegativeInteger ;
+    ip:brand "Aptamil"^^xsd:string ;
+    ip:category "Babykost"^^xsd:string ;
+    ip:countryOfOrigin dbr:Deutschland ;
+    ip:description "Aptamil Pronutra PRE, Anfangsmilch von Geburt an, Baby-Milchpulver (1 x 800 g)"^^xsd:string ;
+    ip:name "Aptamil Pronutra PRE"^^xsd:string ;
+    ip:price "15,95€"^^xsd:string ;
+    ip:productID "B07KHJF8DR"^^xsd:string ;
+    ip:url "https://www.amazon.de/Aptamil-Pronutra-ADVANCE-PRE-Anfangsmilch-Geburt/dp/B07KHJF8DR/ref=sr_1_2_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=FLF4WF6OG75S&keywords=Aptamil+Pronutra+PRE&qid=1641373692&s=grocery&sprefix=aptamil+pronutra+pre%2Cgrocery%2C110&sr=1-2-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEyS04zVkJLRU1QUkVaJmVuY3J5cHRlZElkPUEwMjIxMzY0UkNHUVBOV1ZKRFQ0JmVuY3J5cHRlZEFkSWQ9QTAwOTQ4NTUxMFNEQzBOMlhZMkVYJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ=="^^xsd:string .
+
+:B07QG35J1S a food:FoodProduct ;
+    food:containsIngredient ingWithSub:butterreinfett,
+        ingWithSub:emulgator,
+        ingWithSub:farbstoffe,
+        ingWithSub:stabilisator,
+        ingWithSub:überzugsmittel,
+        ing:aroma,
+        ing:dextrin,
+        ing:erdnüsse,
+        ing:glukosesirup,
+        ing:haselnüsse,
+        ing:kakaobutter,
+        ing:kakaomasse,
+        ing:magermilchpulver,
+        ing:mandeln,
+        ing:milchzucker,
+        ing:palmfett,
+        ing:palmkernöl,
+        ing:salz,
+        ing:sheafett,
+        ing:stärke,
+        ing:vollmilchpulver,
+        ing:zucker ;
+    schema:isBasedOn "https://www.amazon.de/dp/B07QG35J1S"^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "58 Gramm" ;
+            ni:fatContent "11 Gramm" ;
+            ni:proteinContent "10 Gramm" ;
+            ni:servingSize "100 Gramm" ] ;
+    schema:ratingValue "4,3 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "26"^^xsd:nonNegativeInteger ;
+    ip:brand "M&M"^^xsd:string ;
+    ip:category "Süßigkeiten & Knabbereien"^^xsd:string ;
+    ip:countryOfOrigin dbr:Frankreich ;
+    ip:description "M&M'S | Peanut | Schokolinsen mit Erdnusskern | Eine Packung (1 x 150g)"^^xsd:string ;
+    ip:name "M&M'S "^^xsd:string ;
+    ip:price "1,99€"^^xsd:string ;
+    ip:productID "B07QG35J1S"^^xsd:string ;
+    ip:url "https://www.amazon.de/dp/B07QG35J1S"^^xsd:string .
+
+:B082VP5MLZ a food:FoodProduct ;
+    food:containsIngredient ingWithSub1:molkenerzeugnis,
+        ingWithSub1:pflanzlichesfett,
+        ingWithSub1:süssmolkenpulver,
+        ing:aroma,
+        ing:buttereinfett,
+        ing:glutenhaltigesgetreide,
+        ing:kakaobutter,
+        ing:kakaomasse,
+        ing:kondensmagermilch,
+        ing:magermilchpulver,
+        ing:mandeln,
+        ing:salz,
+        ing:schalenfrüchte,
+        ing:sojabohnen,
+        ing:sojalecithin ;
+    schema:isBasedOn "https://www.amazon.de/Marabou-Daim-Schokolade-zartschmelzende-Mandelkaramellst%C3%BCckchen/dp/B082VP5MLZ/ref=sr_1_3?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1F2MKIL72NGY0&keywords=Marabou%2BDaim%2BSchokolade&qid=1641370097&s=grocery&sprefix=marabou%2Bdaim%2Bschokolade%2B%2Cgrocery%2C140&sr=1-3&th=1"^^xsd:string ;
+    schema:ratingValue "4,6 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "511"^^xsd:nonNegativeInteger ;
+    ip:brand "Marabou"^^xsd:string ;
+    ip:category "Süßigkeiten & Knabbereien"^^xsd:string ;
+    ip:countryOfOrigin dbr:Schweden ;
+    ip:description "Marabou Daim Schokolade 1 x 250 g – zartschmelzende Milchschokolade mit Mandelkaramellstückchen – einzigartig leckere schwedische Süßigkeit – Daim"^^xsd:string ;
+    ip:name "Marabou Daim Schokolade 1 x 250 g "^^xsd:string ;
+    ip:price "2,99€"^^xsd:string ;
+    ip:productID "B082VP5MLZ"^^xsd:string ;
+    ip:url "https://www.amazon.de/Marabou-Daim-Schokolade-zartschmelzende-Mandelkaramellst%C3%BCckchen/dp/B082VP5MLZ/ref=sr_1_3?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1F2MKIL72NGY0&keywords=Marabou%2BDaim%2BSchokolade&qid=1641370097&s=grocery&sprefix=marabou%2Bdaim%2Bschokolade%2B%2Cgrocery%2C140&sr=1-3&th=1"^^xsd:string .
+
+:B083Y3C5JC a food:FoodProduct ;
+    food:containsIngredient ingWithSub4:braunerzucker,
+        ingWithSub4:milchschokolade,
+        ingWithSub4:pflanzlicheöle,
+        ing:butter,
+        ing:eier,
+        ing:gluten,
+        ing:natriumcarbonate,
+        ing:speisesalz,
+        ing:süssmolkenpulver,
+        ing:volleipulver,
+        ing:weizenmehl,
+        ing:zucker ;
+    schema:isBasedOn "https://www.amazon.de/Milk-Chocolate-Cookie-XXL-Schokokeks/dp/B083Y3C5JC/ref=sr_1_1_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2972UZLKJGK5Z&keywords=Milk+Chocolate+cookie+XXL&qid=1641371986&s=grocery&sprefix=milk+chocolate+cookie+xxl%2Cgrocery%2C118&sr=1-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEyTkhSN1NGTVI5VzNBJmVuY3J5cHRlZElkPUEwMzkwMzUwMTI3WThEMTUxTEQ1OSZlbmNyeXB0ZWRBZElkPUEwMjExOTM1MVlNNlY5RElKVjhZNiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU="^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "63.2 Gramm" ;
+            ni:fatContent "12.5 Gramm" ;
+            ni:proteinContent "5.4 Gramm" ;
+            ni:servingSize "100 Gramm" ] ;
+    schema:ratingValue "2,0 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "1"^^xsd:nonNegativeInteger ;
+    ip:brand "My-bakery"^^xsd:string ;
+    ip:category "Brot & Backwaren"^^xsd:string ;
+    ip:description "Milk Chocolate Cookie XXL (2,33 € / 100 g) Schokokeks"^^xsd:string ;
+    ip:name "Milk Chocolate Cookie XXL (2"^^xsd:string ;
+    ip:price "1,75€"^^xsd:string ;
+    ip:productID "B083Y3C5JC"^^xsd:string ;
+    ip:url "https://www.amazon.de/Milk-Chocolate-Cookie-XXL-Schokokeks/dp/B083Y3C5JC/ref=sr_1_1_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2972UZLKJGK5Z&keywords=Milk+Chocolate+cookie+XXL&qid=1641371986&s=grocery&sprefix=milk+chocolate+cookie+xxl%2Cgrocery%2C118&sr=1-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEyTkhSN1NGTVI5VzNBJmVuY3J5cHRlZElkPUEwMzkwMzUwMTI3WThEMTUxTEQ1OSZlbmNyeXB0ZWRBZElkPUEwMjExOTM1MVlNNlY5RElKVjhZNiZ3aWRnZXROYW1lPXNwX2F0ZiZhY3Rpb249Y2xpY2tSZWRpcmVjdCZkb05vdExvZ0NsaWNrPXRydWU="^^xsd:string .
+
+:B085Y26ZRW a food:FoodProduct ;
+    food:containsIngredient ingWithSub2:aroma,
+        ing:calciumlactat,
+        ing:citronensäure,
+        ing:erbsenproteinisolat,
+        ing:kartoffelflocken,
+        ing:kartoffelstärke,
+        ing:kichererbsenmehl,
+        ing:knoblauchpulver,
+        ing:natriumdiacetat,
+        ing:petersilie,
+        ing:reismehl,
+        ing:salz,
+        ing:sauerrahmpulver,
+        ing:sonnenblumenöl,
+        ing:süßmolkenpulver,
+        ing:tapiokastärke,
+        ing:zucker,
+        ing:zwiebelpulver ;
+    schema:isBasedOn "https://www.amazon.de/Lorenz-Snack-World-Kichererbsenchips-Cream/dp/B085Y26ZRW/ref=sr_1_1_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&keywords=lorenz+kichererbsen+chips&qid=1641370846&rdc=1&s=grocery&sr=1-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUExREtMUlZIR0JFQ0hPJmVuY3J5cHRlZElkPUEwOTk5MzU2QVRKRjFFWjJDTkEwJmVuY3J5cHRlZEFkSWQ9QTA0NTQyNTAzRlBPRTZXTlFKRjVQJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ=="^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "62 Gramm" ;
+            ni:fatContent "1.5 Gramm" ;
+            ni:proteinContent "13 Gramm" ;
+            ni:servingSize "100 Gramm" ] ;
+    schema:ratingValue "4,7 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "155"^^xsd:nonNegativeInteger ;
+    ip:brand "Lorenz Snack World"^^xsd:string ;
+    ip:category "Süßigkeiten & Knabbereien"^^xsd:string ;
+    ip:countryOfOrigin dbr:UK ;
+    ip:description "Lorenz Snack World Kichererbsenchips Sour Cream & Onion, 12er Pack (12 x 85g)"^^xsd:string ;
+    ip:name "Lorenz Snack World Kichererbsenchips Sour Cream & Onion"^^xsd:string ;
+    ip:price "23,88€"^^xsd:string ;
+    ip:productID "B085Y26ZRW"^^xsd:string ;
+    ip:url "https://www.amazon.de/Lorenz-Snack-World-Kichererbsenchips-Cream/dp/B085Y26ZRW/ref=sr_1_1_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&keywords=lorenz+kichererbsen+chips&qid=1641370846&rdc=1&s=grocery&sr=1-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUExREtMUlZIR0JFQ0hPJmVuY3J5cHRlZElkPUEwOTk5MzU2QVRKRjFFWjJDTkEwJmVuY3J5cHRlZEFkSWQ9QTA0NTQyNTAzRlBPRTZXTlFKRjVQJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ=="^^xsd:string .
+
+:B087P7QLQY a food:FoodProduct ;
+    food:containsIngredient ing:ascorbinsäure,
+        ing:bananen,
+        ing:glutenhaltigesgetreide,
+        ing:hartweizengriess,
+        ing:kakaopulver,
+        ing:magermilch,
+        ing:rapsöl,
+        ing:sonnenblumenöl,
+        ing:stärke,
+        ing:vitaminb1,
+        ing:wasser ;
+    schema:isBasedOn "https://www.amazon.de/Alete-Bio-Gl%C3%A4schen-Getreidebrei-Banane-Kakao-84070/dp/B087P7QLQY/ref=sr_1_2_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=CSYLQJTL39P7&keywords=Alete+bewusst+Milchbrei+Apfel-Birne-Banane+und+Magermilchjoghurt&qid=1641374169&s=grocery&sprefix=alete+bewusst+milchbrei+apfel-birne-banane+und+magermilchjoghurt+%2Cgrocery%2C112&sr=1-2-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUExVjRGSU1URUxOTTdRJmVuY3J5cHRlZElkPUEwNDM5ODM1MlcxVUowOVU2RlJHJmVuY3J5cHRlZEFkSWQ9QTA3NTQ3Mzk4N0RORFBQSjVTMEQmd2lkZ2V0TmFtZT1zcF9hdGYmYWN0aW9uPWNsaWNrUmVkaXJlY3QmZG9Ob3RMb2dDbGljaz10cnVl"^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "10.5 Gramm" ;
+            ni:fatContent "0.4 Gramm" ;
+            ni:proteinContent "2.6 Gramm" ;
+            ni:servingSize "100 Gramm" ] ;
+    schema:ratingValue "4,5 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "232"^^xsd:nonNegativeInteger ;
+    ip:brand "Alete"^^xsd:string ;
+    ip:category "Babykost"^^xsd:string ;
+    ip:countryOfOrigin dbr:Deutschland ;
+    ip:description "Alete bewusst Abendbrei Getreidebrei Banane-Kakao, ab dem 8. Monat, Babybrei mit Kakaopulver & Banane zum Löffeln, Bio Babynahrung aus dem Glas, 6 x 190 g"^^xsd:string ;
+    ip:name "Alete bewusst Abendbrei Getreidebrei Banane"^^xsd:string ;
+    ip:price "4,61€"^^xsd:string ;
+    ip:productID "B087P7QLQY"^^xsd:string ;
+    ip:url "https://www.amazon.de/Alete-Bio-Gl%C3%A4schen-Getreidebrei-Banane-Kakao-84070/dp/B087P7QLQY/ref=sr_1_2_sspa?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=CSYLQJTL39P7&keywords=Alete+bewusst+Milchbrei+Apfel-Birne-Banane+und+Magermilchjoghurt&qid=1641374169&s=grocery&sprefix=alete+bewusst+milchbrei+apfel-birne-banane+und+magermilchjoghurt+%2Cgrocery%2C112&sr=1-2-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUExVjRGSU1URUxOTTdRJmVuY3J5cHRlZElkPUEwNDM5ODM1MlcxVUowOVU2RlJHJmVuY3J5cHRlZEFkSWQ9QTA3NTQ3Mzk4N0RORFBQSjVTMEQmd2lkZ2V0TmFtZT1zcF9hdGYmYWN0aW9uPWNsaWNrUmVkaXJlY3QmZG9Ob3RMb2dDbGljaz10cnVl"^^xsd:string .
+
+:B08GGVZ2S9 a food:FoodProduct ;
+    food:containsIngredient ingWithSub3:emulgator,
+        ingWithSub3:reissauerteigpulver,
+        ing:amaranthmehl,
+        ing:guarkernmehl,
+        ing:hefe,
+        ing:kartoffelstärke,
+        ing:lactosefreiesmagermilchpulver,
+        ing:meersalz,
+        ing:rapsöl,
+        ing:reismehl,
+        ing:salz,
+        ing:sesamsamen,
+        ing:zucker,
+        ing:zuckerrohr,
+        ing:zuckersirup ;
+    schema:isBasedOn "https://www.amazon.de/Wasa-Kn%C3%A4ckebrot-Glutenfrei-Laktosefrei-Meersalz/dp/B08GGVZ2S9/ref=sr_1_2?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=3DYLZQ8BIQNCV&keywords=Wasa+Kn%C3%A4ckebrot+Glutenfrei+%26+Laktosefrei&qid=1641371345&s=grocery&sprefix=wasa+kn%C3%A4ckebrot+glutenfrei+%26+laktosefrei%2Cgrocery%2C145&sr=1-2"^^xsd:string ;
+    schema:nutrition [ ni:carbohydrateContent "70.6 Gramm" ;
+            ni:fatContent "1.4 Gramm" ;
+            ni:proteinContent "5.1 Gramm" ;
+            ni:servingSize "100 Gramm" ] ;
+    schema:ratingValue "4,7 von 5 Sternen"^^xsd:string ;
+    schema:reviewCount "250"^^xsd:nonNegativeInteger ;
+    ip:brand "Wasa"^^xsd:string ;
+    ip:category "Brot & Backwaren"^^xsd:string ;
+    ip:countryOfOrigin dbr:Deutschland ;
+    ip:description "Wasa Knäckebrot Glutenfrei & Laktosefrei Sesam & Meersalz, (240g)"^^xsd:string ;
+    ip:name "Wasa Knäckebrot Glutenfrei & Laktosefrei Sesam & Meersalz"^^xsd:string ;
+    ip:price "3,49€"^^xsd:string ;
+    ip:productID "B08GGVZ2S9"^^xsd:string ;
+    ip:url "https://www.amazon.de/Wasa-Kn%C3%A4ckebrot-Glutenfrei-Laktosefrei-Meersalz/dp/B08GGVZ2S9/ref=sr_1_2?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=3DYLZQ8BIQNCV&keywords=Wasa+Kn%C3%A4ckebrot+Glutenfrei+%26+Laktosefrei&qid=1641371345&s=grocery&sprefix=wasa+kn%C3%A4ckebrot+glutenfrei+%26+laktosefrei%2Cgrocery%2C145&sr=1-2"^^xsd:string .
+
+dbr:Frankreich rdfs:label "Frankreich"@de .
+
+dbr:Schweden rdfs:label "Schweden"@de .
+
+dbr:UK rdfs:label "UK"@de .
+
+dbr:USA rdfs:label "USA"@de .
+
+ingWithSub6:jodsalz a food:Ingredient ;
+    rdfs:label "Jodsalz"^^xsd:string ;
+    food:containsIngredient ing:kaliumjodat,
+        ing:speisesalz .
+
+ingWithSub5:antioxidationsmittel a food:Ingredient ;
+    rdfs:label "Antioxidationsmittel"^^xsd:string ;
+    food:containsIngredient ing:ascorbylpalmitat .
+
+ingWithSub5:emulgator a food:Ingredient ;
+    rdfs:label "Emulgator"^^xsd:string ;
+    food:containsIngredient ing:sojalecithin .
+
+ingWithSub5:galactooligosaccharide a food:Ingredient ;
+    rdfs:label "Galactooligosaccharide"^^xsd:string ;
+    food:containsIngredient ing:milch .
+
+ingWithSub5:laktose a food:Ingredient ;
+    rdfs:label "Laktose"^^xsd:string ;
+    food:containsIngredient ing:milch .
+
+ingWithSub5:molkeneiweiß a food:Ingredient ;
+    rdfs:label "Molkeneiweiß"^^xsd:string ;
+    food:containsIngredient ing:milch .
+
+ingWithSub5:molkenerzeugnis a food:Ingredient ;
+    rdfs:label "Molkenerzeugnis"^^xsd:string ;
+    food:containsIngredient ing:milch .
+
+ingWithSub5:pflanzlicheöle a food:Ingredient ;
+    rdfs:label "Pflanzliche Öle"^^xsd:string ;
+    food:containsIngredient ing:kokosnussöl,
+        ing:rapsöl,
+        ing:sonnenblumenöl .
+
+ingWithSub:butterreinfett a food:Ingredient ;
+    rdfs:label "Butterreinfett"^^xsd:string ;
+    food:containsIngredient ing:milch .
+
+ingWithSub:emulgator a food:Ingredient ;
+    rdfs:label "Emulgator"^^xsd:string ;
+    food:containsIngredient ing:sojalecithin .
+
+ingWithSub:farbstoffe a food:Ingredient ;
+    rdfs:label "Farbstoffe"^^xsd:string ;
+    food:containsIngredient ing:e100,
+        ing:e120,
+        ing:e133,
+        ing:e160a,
+        ing:e160e,
+        ing:e170 .
+
+ingWithSub:stabilisator a food:Ingredient ;
+    rdfs:label "Stabilisator"^^xsd:string ;
+    food:containsIngredient ing:gummiarabicum .
+
+ingWithSub:überzugsmittel a food:Ingredient ;
+    rdfs:label "Überzugsmittel"^^xsd:string ;
+    food:containsIngredient ing:carnaubawachs .
+
+ingWithSub1:molkenerzeugnis a food:Ingredient ;
+    rdfs:label "Molkenerzeugnis"^^xsd:string ;
+    food:containsIngredient ing:milch .
+
+ingWithSub1:pflanzlichesfett a food:Ingredient ;
+    rdfs:label "Pflanzliches Fett"^^xsd:string ;
+    food:containsIngredient ing:palm .
+
+ingWithSub1:süssmolkenpulver a food:Ingredient ;
+    rdfs:label "Süssmolkenpulver"^^xsd:string ;
+    food:containsIngredient ing:milch .
+
+ingWithSub4:braunerzucker a food:Ingredient ;
+    rdfs:label "Brauner Zucker"^^xsd:string ;
+    food:containsIngredient ing:melasse,
+        ing:zucker .
+
+ingWithSub4:milchschokolade a food:Ingredient ;
+    rdfs:label "Milchschokolade"^^xsd:string ;
+    food:containsIngredient ing:aroma,
+        ing:kakaobutter,
+        ing:kakaomasse,
+        ing:magermilchpulver,
+        ing:sojalecithin,
+        ing:süssmolkenpulver,
+        ing:vollmilchpulver,
+        ing:zucker .
+
+ingWithSub4:pflanzlicheöle a food:Ingredient ;
+    rdfs:label "Pflanzliche Öle"^^xsd:string ;
+    food:containsIngredient ing:palm,
+        ing:rapsöl .
+
+ingWithSub2:aroma a food:Ingredient ;
+    rdfs:label "Aroma"^^xsd:string ;
+    food:containsIngredient ing:milcherzeugnisse .
+
+ingWithSub3:emulgator a food:Ingredient ;
+    rdfs:label "Emulgator"^^xsd:string ;
+    food:containsIngredient ing:diglyceride,
+        ing:monoglyceride .
+
+ingWithSub3:reissauerteigpulver a food:Ingredient ;
+    rdfs:label "Reissauerteigpulver"^^xsd:string ;
+    food:containsIngredient ing:reismehl,
+        ing:wasser .
+
+ing:amaranthmehl a food:Ingredient ;
+    rdfs:label "Amaranthmehl"^^xsd:string .
+
+ing:apfelpüree a food:Ingredient ;
+    rdfs:label "Apfelpüree"^^xsd:string .
+
+ing:ascorbinsäure a food:Ingredient ;
+    rdfs:label "Ascorbinsäure"^^xsd:string .
+
+ing:ascorbylpalmitat a food:Ingredient ;
+    rdfs:label "Ascorbylpalmitat"^^xsd:string .
+
+ing:bananen a food:Ingredient ;
+    rdfs:label "Bananen"^^xsd:string .
+
+ing:basilikum a food:Ingredient ;
+    rdfs:label "Basilikum"^^xsd:string .
+
+ing:biotin a food:Ingredient ;
+    rdfs:label "Biotin"^^xsd:string .
+
+ing:butter a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Butter"^^xsd:string .
+
+ing:buttereinfett a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Buttereinfett"^^xsd:string .
+
+ing:calciumcarbonat a food:Ingredient ;
+    rdfs:label "Calciumcarbonat"^^xsd:string .
+
+ing:calciumlactat a food:Ingredient ;
+    rdfs:label "Calciumlactat"^^xsd:string .
+
+ing:calciumorthophosphat a food:Ingredient ;
+    rdfs:label "Calciumorthophosphat"^^xsd:string .
+
+ing:carnaubawachs a food:Ingredient ;
+    rdfs:label "Carnaubawachs"^^xsd:string .
+
+ing:cholinchlorid a food:Ingredient ;
+    rdfs:label "Cholinchlorid"^^xsd:string .
+
+ing:citronensäure a food:Ingredient ;
+    rdfs:label "Citronensäure"^^xsd:string .
+
+ing:dextrin a food:Ingredient ;
+    rdfs:label "Dextrin"^^xsd:string .
+
+ing:diglyceride a food:Ingredient ;
+    rdfs:label "Diglyceride"^^xsd:string .
+
+ing:dinkelmehl a food:Ingredient ;
+    rdfs:label "Dinkelmehl"^^xsd:string .
+
+ing:dinkelvollkornschrot a food:Ingredient ;
+    rdfs:label "Dinkelvollkornschrot"^^xsd:string .
+
+ing:e100 a food:Ingredient ;
+    rdfs:label "E100"^^xsd:string .
+
+ing:e120 a food:Ingredient ;
+    rdfs:label "E120"^^xsd:string .
+
+ing:e133 a food:Ingredient ;
+    rdfs:label "E133"^^xsd:string .
+
+ing:e160a a food:Ingredient ;
+    rdfs:label "E160A"^^xsd:string .
+
+ing:e160e a food:Ingredient ;
+    rdfs:label "E160E"^^xsd:string .
+
+ing:e170 a food:Ingredient ;
+    rdfs:label "E170"^^xsd:string .
+
+ing:e450 a food:Ingredient ;
+    rdfs:label "E450"^^xsd:string .
+
+ing:eier a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Eier"^^xsd:string .
+
+ing:eisen-ii-sulfat a food:Ingredient ;
+    rdfs:label "Eisen-Ii-Sulfat"^^xsd:string .
+
+ing:erbsenproteinisolat a food:Ingredient ;
+    rdfs:label "Erbsenproteinisolat"^^xsd:string .
+
+ing:erdnüsse a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Erdnüsse"^^xsd:string .
+
+ing:fische a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Fische"^^xsd:string .
+
+ing:fischöl a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Fischöl"^^xsd:string .
+
+ing:folsäure a food:Ingredient ;
+    rdfs:label "Folsäure"^^xsd:string .
+
+ing:fructooligosaccharide a food:Ingredient ;
+    rdfs:label "Fructooligosaccharide"^^xsd:string .
+
+ing:gelatine a food:Ingredient ;
+    rdfs:label "Gelatine"^^xsd:string .
+
+ing:gluten a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Gluten"^^xsd:string .
+
+ing:guarkernmehl a food:Ingredient ;
+    rdfs:label "Guarkernmehl"^^xsd:string .
+
+ing:gummiarabicum a food:Ingredient ;
+    rdfs:label "Gummi Arabicum"^^xsd:string .
+
+ing:hartweizengriess a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Hartweizengriess"^^xsd:string .
+
+ing:haselnüsse a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Haselnüsse"^^xsd:string .
+
+ing:inositol a food:Ingredient ;
+    rdfs:label "Inositol"^^xsd:string .
+
+ing:kakaopulver a food:Ingredient ;
+    rdfs:label "Kakaopulver"^^xsd:string .
+
+ing:kaliumchlorid a food:Ingredient ;
+    rdfs:label "Kaliumchlorid"^^xsd:string .
+
+ing:kaliumcitrat a food:Ingredient ;
+    rdfs:label "Kaliumcitrat"^^xsd:string .
+
+ing:kaliumjodat a food:Ingredient ;
+    rdfs:label "Kaliumjodat"^^xsd:string .
+
+ing:kaliumjodid a food:Ingredient ;
+    rdfs:label "Kaliumjodid"^^xsd:string .
+
+ing:karotten a food:Ingredient ;
+    rdfs:label "Karotten"^^xsd:string .
+
+ing:kartoffelflocken a food:Ingredient ;
+    rdfs:label "Kartoffelflocken"^^xsd:string .
+
+ing:kichererbsenmehl a food:Ingredient ;
+    rdfs:label "Kichererbsenmehl"^^xsd:string .
+
+ing:knoblauch a food:Ingredient ;
+    rdfs:label "Knoblauch"^^xsd:string .
+
+ing:knoblauchpulver a food:Ingredient ;
+    rdfs:label "Knoblauchpulver"^^xsd:string .
+
+ing:kokosnussöl a food:Ingredient ;
+    rdfs:label "Kokosnussöl"^^xsd:string .
+
+ing:kondensmagermilch a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Kondensmagermilch"^^xsd:string .
+
+ing:koriander a food:Ingredient ;
+    rdfs:label "Koriander"^^xsd:string .
+
+ing:kupfersulfat a food:Ingredient ;
+    rdfs:label "Kupfersulfat"^^xsd:string .
+
+ing:l-carnitin a food:Ingredient ;
+    rdfs:label "L-Carnitin"^^xsd:string .
+
+ing:l-tryptophan a food:Ingredient ;
+    rdfs:label "L-Tryptophan"^^xsd:string .
+
+ing:lactosefreiesmagermilchpulver a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Lactosefreies Magermilchpulver"^^xsd:string .
+
+ing:magnesiumchlorid a food:Ingredient ;
+    rdfs:label "Magnesiumchlorid"^^xsd:string .
+
+ing:maisstärke a food:Ingredient ;
+    rdfs:label "Maisstärke"^^xsd:string .
+
+ing:mangan-ii-sulfat a food:Ingredient ;
+    rdfs:label "Mangan-II-Sulfat"^^xsd:string .
+
+ing:melasse a food:Ingredient ;
+    rdfs:label "Melasse"^^xsd:string .
+
+ing:milcherzeugnisse a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Milcherzeugnisse"^^xsd:string .
+
+ing:milchzucker a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Milchzucker"^^xsd:string .
+
+ing:monoglyceride a food:Ingredient ;
+    rdfs:label "Monoglyceride"^^xsd:string .
+
+ing:mortierellaalpina a food:Ingredient ;
+    rdfs:label "Mortierella Alpina"^^xsd:string .
+
+ing:natriumcarbonate a food:Ingredient ;
+    rdfs:label "Natriumcarbonate"^^xsd:string .
+
+ing:natriumchlorid a food:Ingredient ;
+    rdfs:label "Natriumchlorid"^^xsd:string .
+
+ing:natriumcitrat a food:Ingredient ;
+    rdfs:label "Natriumcitrat"^^xsd:string .
+
+ing:natriumdiacetat a food:Ingredient ;
+    rdfs:label "Natriumdiacetat"^^xsd:string .
+
+ing:natriumselenit a food:Ingredient ;
+    rdfs:label "Natriumselenit"^^xsd:string .
+
+ing:niacin a food:Ingredient ;
+    rdfs:label "Niacin"^^xsd:string .
+
+ing:oregano a food:Ingredient ;
+    rdfs:label "Oregano"^^xsd:string .
+
+ing:palmkernöl a food:Ingredient ;
+    rdfs:label "Palmkernöl"^^xsd:string .
+
+ing:pantothensäure a food:Ingredient ;
+    rdfs:label "Pantothensäure"^^xsd:string .
+
+ing:pfeffer a food:Ingredient ;
+    rdfs:label "Pfeffer"^^xsd:string .
+
+ing:rindfleisch a food:Ingredient ;
+    rdfs:label "Rindfleisch"^^xsd:string .
+
+ing:sauerrahmpulver a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Sauerrahmpulver"^^xsd:string .
+
+ing:schalenfrüchte a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Schalenfrüchte"^^xsd:string .
+
+ing:sellerie a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Sellerie"^^xsd:string .
+
+ing:sesamsamen a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Sesamsamen"^^xsd:string .
+
+ing:sheafett a food:Ingredient ;
+    rdfs:label "Sheafett"^^xsd:string .
+
+ing:süßmolkenpulver a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Süßmolkenpulver"^^xsd:string .
+
+ing:tapiokastärke a food:Ingredient ;
+    rdfs:label "Tapiokastärke"^^xsd:string .
+
+ing:tomatenmark a food:Ingredient ;
+    rdfs:label "Tomatenmark"^^xsd:string .
+
+ing:vitamina a food:Ingredient ;
+    rdfs:label "Vitamin A"^^xsd:string .
+
+ing:vitaminb12 a food:Ingredient ;
+    rdfs:label "Vitamin B12"^^xsd:string .
+
+ing:vitaminb2 a food:Ingredient ;
+    rdfs:label "Vitamin B2"^^xsd:string .
+
+ing:vitaminb6 a food:Ingredient ;
+    rdfs:label "Vitamin B6"^^xsd:string .
+
+ing:vitaminc a food:Ingredient ;
+    rdfs:label "Vitamin C"^^xsd:string .
+
+ing:vitamind a food:Ingredient ;
+    rdfs:label "Vitamin D"^^xsd:string .
+
+ing:vitamine a food:Ingredient ;
+    rdfs:label "Vitamin E"^^xsd:string .
+
+ing:vitamink a food:Ingredient ;
+    rdfs:label "Vitamin K"^^xsd:string .
+
+ing:volleipulver a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Volleipulver"^^xsd:string .
+
+ing:weizenmehl a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Weizenmehl"^^xsd:string .
+
+ing:zinksulfat a food:Ingredient ;
+    rdfs:label "Zinksulfat"^^xsd:string .
+
+ing:zuckerrohr a food:Ingredient ;
+    rdfs:label "Zuckerrohr"^^xsd:string .
+
+ing:zuckersirup a food:Ingredient ;
+    rdfs:label "Zuckersirup"^^xsd:string .
+
+ing:zwiebeln a food:Ingredient ;
+    rdfs:label "Zwiebeln"^^xsd:string .
+
+ing:zwiebelpulver a food:Ingredient ;
+    rdfs:label "Zwiebelpulver"^^xsd:string .
+
+ing:glukosesirup a food:Ingredient ;
+    rdfs:label "Glukosesirup"^^xsd:string .
+
+ing:glutenhaltigesgetreide a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Glutenhaltiges Getreide"^^xsd:string .
+
+ing:hefe a food:Ingredient ;
+    rdfs:label "Hefe"^^xsd:string .
+
+ing:kartoffelstärke a food:Ingredient ;
+    rdfs:label "Kartoffelstärke"^^xsd:string .
+
+ing:magermilch a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Magermilch"^^xsd:string .
+
+ing:mandeln a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Mandeln"^^xsd:string .
+
+ing:meersalz a food:Ingredient ;
+    rdfs:label "Meersalz"^^xsd:string .
+
+ing:palm a food:Ingredient ;
+    rdfs:label "Palm"^^xsd:string .
+
+ing:palmfett a food:Ingredient ;
+    rdfs:label "Palmfett"^^xsd:string .
+
+ing:petersilie a food:Ingredient ;
+    rdfs:label "Petersilie"^^xsd:string .
+
+ing:sojabohnen a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Sojabohnen"^^xsd:string .
+
+ing:speisesalz a food:Ingredient ;
+    rdfs:label "Speisesalz"^^xsd:string .
+
+ing:süssmolkenpulver a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Süssmolkenpulver"^^xsd:string .
+
+ing:vitaminb1 a food:Ingredient ;
+    rdfs:label "Vitamin B1"^^xsd:string .
+
+ing:vollmilchpulver a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Vollmilchpulver"^^xsd:string .
+
+ing:kakaobutter a food:Ingredient ;
+    rdfs:label "Kakaobutter"^^xsd:string .
+
+ing:kakaomasse a food:Ingredient ;
+    rdfs:label "Kakaomasse"^^xsd:string .
+
+ing:magermilchpulver a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Magermilchpulver"^^xsd:string .
+
+ing:reismehl a food:Ingredient ;
+    rdfs:label "Reismehl"^^xsd:string .
+
+ing:sonnenblumenöl a food:Ingredient ;
+    rdfs:label "Sonnenblumenöl"^^xsd:string .
+
+ing:stärke a food:Ingredient ;
+    rdfs:label "Stärke"^^xsd:string .
+
+dbr:Deutschland rdfs:label "Deutschland"@de .
+
+ing:aroma a food:Ingredient ;
+    rdfs:label "Aroma"^^xsd:string .
+
+ing:salz a food:Ingredient ;
+    rdfs:label "Salz"^^xsd:string .
+
+ing:sojalecithin a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Sojalecithin"^^xsd:string .
+
+ing:wasser a food:Ingredient ;
+    rdfs:label "Wasser"^^xsd:string .
+
+ing:rapsöl a food:Ingredient ;
+    rdfs:label "Rapsöl"^^xsd:string .
+
+ing:milch a food:Ingredient,
+        dbr:Allergen ;
+    rdfs:label "Milch"^^xsd:string .
+
+ing:zucker a food:Ingredient ;
+    rdfs:label "Zucker"^^xsd:string .
+
+dbr:Allergen rdfs:label "Allergen"@de .
+
