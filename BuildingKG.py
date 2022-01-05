@@ -1,5 +1,6 @@
 from getFoodProduct import get_product
 from pathlib import Path
+from cleanData import cleanKG
 
 from rdflib import Graph, URIRef, BNode, Literal
 from rdflib.namespace import Namespace, RDF, SDO, XSD, RDFS, URIPattern
@@ -83,13 +84,20 @@ def addfoodProduct(fproduct):
         (nutritionalFacts, nutritionalInformation['carbohydrateContent'], carbohydrates))
 
     # Adding the ingredients and its subingredients
-    ingr = Namespace('https://example.org/food/'+fproduct.getAsin()+'/ingredient/')
+    ingr= Namespace('https://example.org/food/ingredient/')
+    ingrWithSubs = Namespace('https://example.org/food/'+fproduct.getAsin()+'/ingredient/')
+
     foodGraph.bind('ing', ingr)
+    foodGraph.bind('ingWithSub',ingrWithSubs)
 
     if fproduct.getIngredients() != 'None':
         for i in fproduct.getIngredients():
-            # Creating the nodes for the ingredient
-            ingredient = URIRef(ingr[i.ingredient.lower().replace(' ', '')])
+
+            if i.subingredient:
+                ingredient = URIRef(ingrWithSubs[i.ingredient.lower().replace(' ', '')])
+            else:
+                ingredient = URIRef(ingr[i.ingredient.lower().replace(' ', '')])
+                 
             ingredientName = Literal(
                 i.ingredient.lower().title(), datatype=xsd['string'])
 
@@ -119,6 +127,7 @@ def addfoodProduct(fproduct):
 
         # Adding the allergens from the ingredients
         for a in fproduct.getAllergens():
+    
             allergy = URIRef(ingr[a.lower().replace(' ', '')])
             foodGraph.add((allergy, rdf.type, allergen))
 
@@ -146,7 +155,7 @@ def get_url():
 
 def buildGraph():
 
-    # Check if there is a Turtle file
+    # Check if Turtle file exists
     # if yes, parse this file
     if Path('foodGraph.ttl').is_file():
         exists = True
@@ -154,28 +163,35 @@ def buildGraph():
     else:
         exists = False
 
-   # Fetch the url from the input stream
-   # Break the process if the user enter an empty url
-    url = get_url()
-    while url != '':
-        if exists:
-            # Check if the food product is allready in the Knowledge Graph
-            # if yes, ingnore this product
-            # else, fetch all information to this product and add it to the KG
-            node = Literal(url, datatype=XSD['string'])
-            if not (None, None, node) in foodGraph:
-                fp = get_product(url)
-                addfoodProduct(fp)
-        else:
-            fp = get_product(url)
-            addfoodProduct(fp)
 
-        serializeGraph()
+    while 1:
+
+        # Fetch the url from the input stream
+        # Break the process if the user enter an empty url
         url = get_url()
+
+        if url =='':
+            break
+
+        # if the KG exists, then check if the food product is allready in the Knowledge Graph
+        # if yes, ingnore this url
+        # else, fetch all information to this product and add it to the KG
+        node = Literal(url, datatype=XSD['string'])
+        if exists and  (None, None, node) in foodGraph:
+            continue
+    
+        fp = get_product(url)
+        addfoodProduct(fp)
+        serializeGraph()
+    cleanKG()
+        
+
+
 
 
 def main():
     buildGraph()
+    
 
 
 if __name__ == '__main__':

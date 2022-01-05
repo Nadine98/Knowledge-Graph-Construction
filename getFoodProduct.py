@@ -1,4 +1,3 @@
-from types import NoneType
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
@@ -49,6 +48,7 @@ def allergies_table(soup):
             allergen = [x.strip() for x in content.split(":")[1].split(",")]
         else:
             allergen = [x.strip() for x in content.split(",")]
+        
 
     return allergen
 
@@ -70,37 +70,37 @@ def allergens(soup, foodIngredients):
                 if re.search('.[A-Z][A-Z][A-Z]+.', sub):
                     allergen.append(sub)
 
-    if allergen == list():
-        table = get_allergies_table(soup)
+   
+    
+    table = allergies_table(soup)
 
-        
+    if table !='None':
         for a in table:
-            notIN=False
+            notIN = False
 
+            # check if the allergen from the table is included in the ingredient list 
+            # is a substring of the ingredient
             for i in foodIngredients:
                 if a.lower() in i.ingredient.lower():
-                    print(i.ingredient)
-                    notIN=True
+                    notIN = True
                     allergen.append(i.ingredient)
 
-                if i.subingredient !=list():
+            # Check also this in the subingredients 
+                if i.subingredient != list():
                     for sub in i.subingredient:
                         if a.lower() in sub.lower():
-                            print(i.ingredient)
-                            notIN=True
+                            notIN = True
                             allergen.append(sub)
-
-            if notIN==False:
+            # if the allergen is not a part of an ingredient, then added to the list 
+            if notIN == False:
                 allergen.append(a)
 
-
-               
 
     return allergen
 
 
+# Extract ingredients Bestandteile
 def ingredients(soup):
-    # Extract ingredients Bestandteile
 
     ingredients = 'None'
     info = soup.find("h4", text="Bestandteile")
@@ -217,6 +217,8 @@ def ingredients(soup):
 
 def amazon_category(soup):
 
+    category = 'None'
+
     info = soup.find('div', attrs={'id': 'showing-breadcrumbs_div'})
     if info:
         info = info.find(
@@ -232,8 +234,6 @@ def amazon_category(soup):
                     # list[index+2]='Süßigkeiten & Knabbereien'
                     category = list[index+2].text.strip()
                     break
-    else:
-        category = 'None'
 
     return category
 
@@ -273,22 +273,24 @@ def country(soup):
     info = soup.find('h5', text='Allgemeine Produktinformationen')
 
     if info:
+        country='None'
         table_rows = info.find_parent('div').table.find_all('tr')
 
         for td in enumerate(table_rows):
             if 'Ursprungsland' in td[1].text or 'Herkunftsland' in td[1].text:
                 country = table_rows[td[0]].td.text
                 country = country.replace('\u200e', '').strip()
-                break
 
-        if country != 'None':
-            country = trans.translate(country, dest='de').text
+                country = trans.translate(country, dest='de').text
+
+                break
 
         if country == 'Vereinigte Staaten':
             country = 'USA'
         if country == 'Vereinigte Königreich' or country == 'Vereinigtes Königreich':
             country = 'UK'
-
+        
+        
     return country
 
 
@@ -312,6 +314,8 @@ def price(soup):
     try:
         price = soup.find(
             'span', attrs={'class': 'a-offscreen'}).text.strip()
+        if not('€' in price):
+                price='None'
     except:
         price = 'None'
 
@@ -335,6 +339,10 @@ def name(soup):
             name = name.split(',')[0]
         if '-' in name:
             name = name.split('-')[0]
+        if '–' in name:
+            name=name.split('–')[0]
+        if '(' in name:
+            name=name.split('(')[0]
         if '|' in name:
             name = name.split('|')[0]
         if '-' in name:
@@ -347,10 +355,11 @@ def name(soup):
 
 
 def get_soup(url):
-
+    
     driver = webdriver.Chrome(
         executable_path='C:\Program Files (x86)\chromedriver.exe')
-    driver.get(url,)
+    driver.get(url)
+
     source = driver.page_source
     driver.quit()
 
@@ -361,7 +370,7 @@ def get_soup(url):
 
 def get_ASIN(url):
     asin = url.split('/dp/')[1]
-    asin=asin[:10]
+    asin = asin[:10]
     return asin
 
 
@@ -384,15 +393,15 @@ def get_product(url):
     foodproduct.setReviewNumber(reviewNumber(soup))
     foodproduct.setRating(rating(soup))
     foodproduct.setIngredients(ingredients(soup))
-   
 
     if foodproduct.getIngredients() == 'None':
         foodproduct.setAllergens(allergies_table(soup))
+        if foodproduct.getAllergens()!='None':
+            foodproduct.setIngredients(foodproduct.getAllergens())
     else:
         foodproduct.setAllergens(allergens(soup, foodproduct.getIngredients()))
-
-    for a in foodproduct.getAllergens():
-        if not(foodproduct.findIngredient(a)):
-            foodproduct.addAllergenToIngredients(a)
+        for a in foodproduct.getAllergens():
+            if not(foodproduct.findIngredient(a)):
+                foodproduct.addAllergenToIngredients(a)
 
     return foodproduct

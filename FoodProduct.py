@@ -99,6 +99,14 @@ class foodProduct:
         if type(allergen)==str:
             ing.addIngredient(allergen)
             self.__ingredients.append(ing)
+
+        elif type(allergen) is list:
+            self.__ingredients = [foodIngredient()
+                                for i in range(len(allergen))]
+            for i in range(len(allergen)):
+                self.__ingredients[i].addIngredient(allergen[i])
+
+
             
 
     def findIngredient(self,a):
