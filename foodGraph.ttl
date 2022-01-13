@@ -317,8 +317,6 @@ dbr:UK rdfs:label "UK"@de .
 
 dbr:USA rdfs:label "USA"@de .
 
-dbr:Deutschland rdfs:label "Deutschland"@de .
-
 ingWithSub3:salami a food:Ingredient ;
     rdfs:label "Salami"^^xsd:string ;
     food:containsIngredient ing:aroma,
@@ -397,7 +395,7 @@ ingWithSub1:pflanzlichesfett a food:Ingredient ;
     food:containsIngredient ing:palm .
 
 ingWithSub7:braunerzucker a food:Ingredient ;
-    rdfs:label "Brauner Zucker"^^xsd:string ;
+    rdfs:label "Braunerzucker"^^xsd:string ;
     food:containsIngredient ing:melasse,
         ing:zucker .
 
@@ -778,6 +776,8 @@ ing:stärke a food:Ingredient ;
 ing:süssmolkenpulver a food:Ingredient,
         dbr:Allergen ;
     rdfs:label "Süssmolkenpulver"^^xsd:string .
+
+dbr:Deutschland rdfs:label "Deutschland"@de .
 
 ing:aroma a food:Ingredient ;
     rdfs:label "Aroma"^^xsd:string .

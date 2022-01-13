@@ -3,7 +3,7 @@ from pathlib import Path
 from cleanData import cleanKG
 
 from rdflib import Graph, URIRef, BNode, Literal
-from rdflib.namespace import Namespace, RDF, SDO, XSD, RDFS, URIPattern
+from rdflib.namespace import Namespace, RDF, SDO, XSD, RDFS
 
 foodGraph = Graph()
 
@@ -16,21 +16,20 @@ def addfoodProduct(fproduct):
 
     global foodGraph
 
-    # Creating the namespaces
+    # Create the namespaces
     ex = Namespace('https://example.org/food/')
     food = Namespace('http://data.lirmm.fr/ontologies/food#')
     nutritionalInformation = Namespace(
         'https://schema.org/NutritionInformation#')
     individualProduct = Namespace('https://schema.org/IndividualProduct#')
     dbpediaResource = Namespace('http://dbpedia.org/resource/')
-    
 
     schema = SDO
     rdf = RDF
     rdfs = RDFS
     xsd = XSD
 
-    # Binding the namespaces to a prefix
+    # Bind the namespaces to a prefix
     foodGraph.bind('', ex)
     foodGraph.bind('food', food)
     foodGraph.bind('ip', individualProduct)
@@ -41,7 +40,9 @@ def addfoodProduct(fproduct):
     foodGraph.bind('rdfs', rdfs)
     foodGraph.bind('xsd', xsd)
 
-    # Creating nodes for the general information
+# ------------------------------------General product information-----------------------------------------
+
+    # Create nodes for the general product information
     country = URIRef(dbpediaResource[fproduct.getCountry()])
     foodproduct = URIRef(ex[fproduct.getAsin()])
     description = Literal(fproduct.getDescription(), datatype=xsd['string'])
@@ -53,7 +54,7 @@ def addfoodProduct(fproduct):
     category = Literal(fproduct.getCategory(), datatype=xsd['string'])
     countryName = Literal(fproduct.getCountry(), lang='de')
 
-    # Adding the nodes for general information
+    # Add the nodes for general product information
     foodGraph.add((foodproduct, rdf.type, food['FoodProduct']))
     foodGraph.add((foodproduct, individualProduct['description'], description))
     foodGraph.add((foodproduct, individualProduct['name'], name))
@@ -66,7 +67,9 @@ def addfoodProduct(fproduct):
     foodGraph.add((foodproduct, individualProduct['countryOfOrigin'], country))
     foodGraph.add((country, rdfs.label, countryName))
 
-    # Creating nodes for the nuritional information
+# ------------------------------------Nutritional information----------------------------------------------------------
+
+    # Create nodes for the nutritional information
     nutritionalFacts = BNode(
         value='nutritional Information of'+fproduct.getAsin())
     servingSize = Literal(fproduct.getNutritional_information().servingSize)
@@ -75,7 +78,7 @@ def addfoodProduct(fproduct):
         fproduct.getNutritional_information().carbohydrates)
     proteins = Literal(fproduct.getNutritional_information().protein)
 
-   # Adding the nutritional information
+    # Add the nutritional information to the graph
     foodGraph.add((foodproduct, schema['nutrition'], nutritionalFacts))
     foodGraph.add(
         (nutritionalFacts, nutritionalInformation['servingSize'], servingSize))
@@ -86,8 +89,12 @@ def addfoodProduct(fproduct):
     foodGraph.add(
         (nutritionalFacts, nutritionalInformation['carbohydrateContent'], carbohydrates))
 
-    # Adding the ingredients and its subingredients
+
+# ------------------------------------Ingredients and sub-ingredients-------------------------------------------------------
+
     ingr = Namespace('https://example.org/food/ingredient/')
+
+    # For sub-ingredients use the Namespace --> 'https://example.org/food/'+fproduct.getAsin()+'/ingredient/'
     ingrWithSubs = Namespace(
         'https://example.org/food/'+fproduct.getAsin()+'/ingredient/')
 
@@ -95,11 +102,15 @@ def addfoodProduct(fproduct):
     foodGraph.bind('ingWithSub', ingrWithSubs)
 
     if fproduct.getIngredients() != 'None':
+
         for i in fproduct.getIngredients():
 
+            # if an ingredient has sub-ingredients then use the Namespace ingrWithSub
             if i.subingredient:
                 ingredient = URIRef(
                     ingrWithSubs[i.ingredient.lower().replace(' ', '')])
+
+            # Else use ingr Namespace
             else:
                 ingredient = URIRef(
                     ingr[i.ingredient.lower().replace(' ', '')])
@@ -107,59 +118,60 @@ def addfoodProduct(fproduct):
             ingredientName = Literal(
                 i.ingredient.lower().title(), datatype=xsd['string'])
 
-            # Adding the ingredient to the graph
+            # Add the ingredient to the graph
             foodGraph.add(
                 (foodproduct, food['containsIngredient'], ingredient))
             foodGraph.add((ingredient, rdf.type, food['Ingredient']))
             foodGraph.add((ingredient, rdfs.label, ingredientName))
 
+            # Add the sub-ingredients
             if i.subingredient:
 
-                # Creating the nodes for the subingredients
+                # Create the nodes for the sub-ingredients
                 for sub in i.subingredient:
                     subing = URIRef(ingr[sub.lower().replace(' ', '')])
                     subIngredientName = Literal(
                         sub.lower().title(), datatype=xsd['string'])
 
-                    # Adding subingredients of an ingredient
+                    # Add sub-ingredients to the KG
                     foodGraph.add(
                         (ingredient, food['containsIngredient'], subing))
                     foodGraph.add((subing, rdf.type, food['Ingredient']))
                     foodGraph.add((subing, rdfs.label, subIngredientName))
 
-        # Adding allergen to the KG
+
+# ------------------------------------Allergens--------------------------------------------------
+
         if fproduct.getAllergens() != 'None':
 
             allergen = URIRef(dbpediaResource['Allergen'])
             foodGraph.add(
                 (allergen, rdfs.label, Literal('Allergen', lang='de')))
 
-            # Adding the allergens from the ingredients
+            # Add the allergens in the KG
             for a in fproduct.getAllergens():
-
                 allergy = URIRef(ingr[a.lower().replace(' ', '')])
                 foodGraph.add((allergy, rdf.type, allergen))
 
-    # Add the rating and the reviewNumber
+
+# ------------------------------------Rating and the ReviewNumber--------------------------------------
+
     foodGraph.add((foodproduct, schema['ratingValue'], Literal(
         fproduct.getRating(), datatype=xsd['string'])))
     foodGraph.add((foodproduct, schema['reviewCount'], Literal(
         fproduct.getReviewNumber(), datatype=xsd['nonNegativeInteger'])))
+# ----------------------------------------------------------------------------------------------
 
 
 def get_url():
     while 1:
         url = str(input('\nEnter here the url: \n'))
 
-        if url == '':
-            url = ''
-            return url
-
-        elif "https://www.amazon.de/"not in url:
+        if "https://www.amazon.de/"not in url and url != '':
             print("not an Amazon URL")
             continue
-        else:
-            return url
+
+        return url
 
 
 def buildGraph():
@@ -191,6 +203,8 @@ def buildGraph():
         fp = get_product(url)
         addfoodProduct(fp)
         serializeGraph()
+
+    # After adding food product into the KG start the Data Cleaning
     cleanKG()
 
 

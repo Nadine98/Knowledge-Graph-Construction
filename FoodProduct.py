@@ -1,4 +1,8 @@
+# The main class is foodProduct
+# it uses the other classes to structure and the nurtitional information and the ingredients
 
+
+# Class for storing the nutritional information
 class nutritional_information:
 
     def __init__(self):
@@ -20,6 +24,7 @@ class nutritional_information:
         self.protein = protein
 
 
+# Class for storing an ingredient and its sub-ingredients
 class foodIngredient:
     def __init__(self, ingredient=None):
         self.ingredient = ingredient
@@ -53,6 +58,7 @@ class foodProduct:
         self.__reviewNumber = 'None'
         self.__rating = 'None'
 
+# --------------------------------------------Setters for the insertion of the attributes' values--------------------------------------------
     def setName(self, name):
         self.__name = name
 
@@ -78,38 +84,44 @@ class foodProduct:
         self.__country_of_origin = country
 
     def setIngredients(self, ingredient):
+        # Input is a list of ingredients
 
         if (type(ingredient) is list and ingredient != list()) and self.__ingredients == 'None':
+
+            # Create first an empty list of the type foodIngredient
             self.__ingredients = [foodIngredient()
                                   for i in range(len(ingredient))]
 
+            # Add every ingredient in the list
             for i, value in enumerate(ingredient):
                 if type(value) is str:
                     self.__ingredients[i].addIngredient(value)
 
+                # if the ingredient value is a list then add the first value into the attribut ingredient --> with the method addIngredient
+                # And then the follow up elements in the attribute subIngredients --> with the method addSubIngredient
                 if type(value) is list:
                     self.__ingredients[i].addIngredient(value[0])
                     value.remove(value[0])
                     for value2 in value:
                         self.__ingredients[i].addSubIngredient(value2)
 
+    # Add an allergen to the ingredient list
+
     def addAllergenToIngredients(self, allergen):
         ing = foodIngredient()
+
         if type(allergen) == str:
             ing.addIngredient(allergen)
             self.__ingredients.append(ing)
 
-        elif type(allergen) is list:
-            self.__ingredients = [foodIngredient()
-                                  for i in range(len(allergen))]
-            for i in range(len(allergen)):
-                self.__ingredients[i].addIngredient(allergen[i])
+    # Finde an ingredient in the attribut list ingredients and return 'True'
 
     def findIngredient(self, a):
 
         for i in self.__ingredients:
             if i.ingredient == a:
                 return True
+
             if i.subingredient != list():
                 for sub in i.subingredient:
                     if sub == a:
@@ -134,7 +146,7 @@ class foodProduct:
         self.__rating = rating
 
 
-# Getter-Methods
+# --------------------------------------------Getters for accessing the private attributes----------------------------------------------
 
     def getName(self):
         return self.__name

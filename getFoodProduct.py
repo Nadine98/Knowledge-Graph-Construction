@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
-
 import re
 from googletrans import Translator
 
 from FoodProduct import foodProduct
 from FoodProduct import nutritional_information
+
+# Extract the rating_score from the tag span with class='a-icon-alt'
 
 
 def rating(soup):
@@ -19,6 +20,7 @@ def rating(soup):
     return review_score
 
 
+# Extract the number of reviews from the tag span with id='acrCustomerReviewText'
 def reviewNumber(soup):
     try:
         reviewNumber = soup.find(
@@ -31,6 +33,7 @@ def reviewNumber(soup):
     return reviewNumber
 
 
+# Extract the allergens from the allergy table
 def allergies_table(soup):
 
     allergen = 'None'
@@ -52,6 +55,7 @@ def allergies_table(soup):
     return allergen
 
 
+# Extract the allergens from the ingredients
 def allergens(soup, foodIngredients):
     allergen = list()
 
@@ -59,34 +63,43 @@ def allergens(soup, foodIngredients):
         allergen = 'None'
         return allergen
 
+    # Searching for ingredient with capital letters
     for ingredient in foodIngredients:
-        # for the German Umlaute 
-        ingr=ingredient.ingredient.replace('Ä','AE').replace('O','OE').replace('Ü','UE')
-        if re.search('.[A-Z][A-Z][A-Z]+.',ingr):
+
+        # For the German Umlaute
+        ingr = ingredient.ingredient.replace(
+            'Ä', 'AE').replace('O', 'OE').replace('Ü', 'UE')
+
+        if re.search('.[A-Z][A-Z][A-Z]+.', ingr):
             allergen.append(ingredient.ingredient)
 
+        # Search for allergens in the sub-ingredients
         if ingredient.subingredient:
             for sub in ingredient.subingredient:
-                # for the German Umlaute 
-                subingr=sub.replace('Ä','AE').replace('O','OE').replace('Ü','UE')
+                # for the German Umlaute
+                subingr = sub.replace('Ä', 'AE').replace(
+                    'O', 'OE').replace('Ü', 'UE')
                 if re.search('.[A-Z][A-Z][A-Z]+.', subingr):
                     allergen.append(sub)
 
+    # Search for further allergens in the allergy table
     table = allergies_table(soup)
 
     if table != 'None':
         for a in table:
             notIN = False
 
-            # check if the allergen from the table is included in the ingredient list
-            # is a substring of the ingredient
             for i in foodIngredients:
+
+                # Check if the allergen from the table is in the ingredient list
                 if a.lower() in i.ingredient.lower():
                     notIN = True
+
+                    # if the allergen is in the ingredients then check if it not already in the allergen list
                     if not (i.ingredient in allergen):
                         allergen.append(i.ingredient)
 
-            # Check also this in the subingredients
+            # Repeat this process for the sub-ingredients
                 if i.subingredient != list():
                     for sub in i.subingredient:
                         if a.lower() in sub.lower():
@@ -94,15 +107,14 @@ def allergens(soup, foodIngredients):
                             if not (sub in allergen):
                                 allergen.append(sub)
 
-
-            # if the allergen is not a part of an ingredient, then added to the list
+            # if the allergen is not a part of the ingredients, then added to the list
             if notIN == False:
                 allergen.append(a)
 
     return allergen
 
 
-# Extract ingredients Bestandteile
+# Extract ingredients from the text 'Bestandteile'
 def ingredients(soup):
 
     ingredients = 'None'
@@ -111,14 +123,21 @@ def ingredients(soup):
     if info:
         contents = info.find_parent('div').find_all('p')[1].text
 
-        # storing an ingredient --> Character by character
+        # Variable for storing an ingredient
         ingredient = ''
         # List for storing the ingredients
         ingredients = list()
-        # List for subingredients of an ingredient
+        # List for the sub-ingredients of an ingredient --> first element is the ingredient and the follow up elements are the sub-ingredients
         subingredients = list()
         # Variable for counting the brackets
         x = 0
+
+# -------------------------------------------------------------------------------------------------------------------------------------------------
+
+        # Remove/Change words and characters from the ingredient list to create an unified structure
+
+        # In the ingredient list, each ingredient is separated by a comma --> e.g. Mehl, Zucker, Wasser,...
+        # The sub-ingredients of in ingredient are between round brackets --> e.g. Sauerteig (Weizenmehl,Roggenmehl)
 
         if 'Kann' in contents:
             contents = contents.replace('(Kann', ',')
@@ -126,7 +145,6 @@ def ingredients(soup):
             contents = contents.replace('enthalten', '')
             contents = contents.replace('andere', '')
 
-        # Removing unneccary words and characters and words
         if 'Zutaten:' in contents:
             contents = contents.replace('Zutaten:', '')
 
@@ -140,6 +158,8 @@ def ingredients(soup):
             contents = contents.replace(';', ',')
         if '.' in contents:
             contents = contents.replace('.', '')
+        if '*' in contents:
+            contents = contents.replace('*:', '')
         if 'und ' in contents:
             contents = contents.replace('und', ',')
         if 'aus ' in contents:
@@ -157,30 +177,31 @@ def ingredients(soup):
         if 'gehackt' in contents:
             contents = contents.replace('gehackt', '')
 
-        # Removing the percentages
+        # Remove the percentages
         contents = re.sub(
             r'(\d+%|\d+.\d+%|\d+ %|\d+.\d+ %|\d+Prozent|\d+.\d+Prozent|\d+ Prozent|\d+.\d+ Prozent)', '', contents)
         contents = re.sub(r'[(][)]|[(] [)]', '', contents)
 
-        # Extracting the ingredients by reading character by character
+# -------------------------------------------------------------------------------------------------------------------------------
+
+        # Extract the ingredients by reading every single character from the ingredient list
         for index, content in enumerate(contents):
 
-            if content in '*':
-                continue
-
-            elif content == ':':
+            # Ignore the word before ':'
+            if content == ':':
                 ingredient = ''
 
+            # Each character is stored in the variable ingredient
             elif (content != ',' and x <= 1) and (content != '(' and content != ')'):
                 ingredient = ingredient+content
 
+            # Store the ingredients in a ingredient list
             elif content == ',' and x == 0:
-
                 ingredients.append(ingredient.strip())
                 ingredient = ''
 
+            # Store the sub-ingredients in a list
             elif content == ',' and x == 1:
-
                 subingredients.append(ingredient.strip())
                 ingredient = ''
 
@@ -198,19 +219,20 @@ def ingredients(soup):
                 subingredients = list()
                 x = 0
 
+            # Ignore the brackets and its content if the brackets are listed in the sub-ingredients
             elif content == '(' and x >= 1:
                 x += 1
             elif content == ')' and x > 1:
                 x -= 1
 
-        # Adding the last ingredient if is not in the list
+        # Add the last ingredient if is not in the list
         if ingredient not in ingredients:
             ingredients.append(ingredient.strip())
 
-        # Removing the empty entries
+        # Remove the empty entries
         ingredients = [x for x in ingredients if x]
 
-        # Removing empty lists
+        # Remove empty lists
         for i, x in enumerate(ingredients):
             if type(x) is list and ('' in x or ' ' in x):
                 ingredients.remove(x)
@@ -218,6 +240,7 @@ def ingredients(soup):
     return ingredients
 
 
+#  Extract the category from the breadcrumbs/ path of links
 def amazon_category(soup):
 
     category = 'None'
@@ -239,6 +262,9 @@ def amazon_category(soup):
                     break
 
     return category
+
+# Extract the nutritional information from a table with the headline 'Nährwertangaben'
+# In the table rows with the content 'Portionsgröße', 'Fett', 'Kohlenhydrate' and 'Eiweiß'
 
 
 def nutritionalInformation(soup):
@@ -269,6 +295,8 @@ def nutritionalInformation(soup):
     return nutritionalInformation
 
 
+# Extract the country from a table with the headline 'Allgemeine Produktinformationen'
+# In the table row with the content 'Ursprungsland' or 'Herkunftsland'
 def country(soup):
     trans = Translator()
 
@@ -295,6 +323,8 @@ def country(soup):
     return country
 
 
+# Extract the brand from a table with the headline 'Allgemeine Produktinformationen'
+# In the table row with the content 'Marke'
 def brand(soup):
     info = soup.find('h5', text='Allgemeine Produktinformationen')
 
@@ -311,6 +341,7 @@ def brand(soup):
     return brand
 
 
+# Extract the product's price from the tag span with the class= 'a-offscreen'
 def price(soup):
     try:
         price = soup.find(
@@ -323,6 +354,7 @@ def price(soup):
     return price
 
 
+# Extract the product's description from the tag with the id='productTitle'
 def description(soup):
     try:
         description = soup.find(id='productTitle').get_text().strip()
@@ -332,6 +364,7 @@ def description(soup):
     return description
 
 
+# Extract the product's name from the tag with the id='productTitle'
 def name(soup):
 
     try:
@@ -357,25 +390,31 @@ def name(soup):
 
 def get_soup(url):
 
+    # Using the chrome webdriver to fetch the HTML code
     driver = webdriver.Chrome(
         executable_path='C:\Program Files (x86)\chromedriver.exe')
     driver.get(url)
 
+    # Store the HTML-Code into a variable
     source = driver.page_source
+
+    # Close the Browser
     driver.quit()
 
+    # Parse the HTML Code in individual parts (or HTML nodes)
     soup = BeautifulSoup(source, 'html.parser')
 
     return soup
 
 
+# Extract the ASIN fromt the product's URL
 def get_ASIN(url):
     asin = url.split('/dp/')[1]
     asin = asin[:10]
     return asin
 
 
-# Extracting the food product and its information
+# Extract the food product and its information
 def get_product(url):
 
     foodproduct = foodProduct()
@@ -396,10 +435,15 @@ def get_product(url):
     foodproduct.setRating(rating(soup))
     foodproduct.setIngredients(ingredients(soup))
 
+    # If there aren't ingredients then extraxt the allergens from the allergy table 
+    # and add the allergens to the ingredients
     if foodproduct.getIngredients() == 'None':
         foodproduct.setAllergens(allergies_table(soup))
         if foodproduct.getAllergens() != 'None':
             foodproduct.setIngredients(foodproduct.getAllergens())
+
+    # If there are ingredients then extraxt the allergens from the ingredient list and the allergy table
+    # and add the allergens to the ingredient list if they are not inside it
     else:
         foodproduct.setAllergens(allergens(soup, foodproduct.getIngredients()))
         for a in foodproduct.getAllergens():
