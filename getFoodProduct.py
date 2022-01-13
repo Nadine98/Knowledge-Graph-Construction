@@ -48,7 +48,6 @@ def allergies_table(soup):
             allergen = [x.strip() for x in content.split(":")[1].split(",")]
         else:
             allergen = [x.strip() for x in content.split(",")]
-        
 
     return allergen
 
@@ -61,40 +60,44 @@ def allergens(soup, foodIngredients):
         return allergen
 
     for ingredient in foodIngredients:
-
-        if re.search('.[A-Z][A-Z][A-Z]+.', ingredient.ingredient):
+        # for the German Umlaute 
+        ingr=ingredient.ingredient.replace('Ä','AE').replace('O','OE').replace('Ü','UE')
+        if re.search('.[A-Z][A-Z][A-Z]+.',ingr):
             allergen.append(ingredient.ingredient)
 
         if ingredient.subingredient:
             for sub in ingredient.subingredient:
-                if re.search('.[A-Z][A-Z][A-Z]+.', sub):
+                # for the German Umlaute 
+                subingr=sub.replace('Ä','AE').replace('O','OE').replace('Ü','UE')
+                if re.search('.[A-Z][A-Z][A-Z]+.', subingr):
                     allergen.append(sub)
 
-   
-    
     table = allergies_table(soup)
 
-    if table !='None':
+    if table != 'None':
         for a in table:
             notIN = False
 
-            # check if the allergen from the table is included in the ingredient list 
+            # check if the allergen from the table is included in the ingredient list
             # is a substring of the ingredient
             for i in foodIngredients:
                 if a.lower() in i.ingredient.lower():
                     notIN = True
-                    allergen.append(i.ingredient)
+                    if not (i.ingredient in allergen):
+                        allergen.append(i.ingredient)
 
-            # Check also this in the subingredients 
+            # Check also this in the subingredients
                 if i.subingredient != list():
                     for sub in i.subingredient:
                         if a.lower() in sub.lower():
                             notIN = True
-                            allergen.append(sub)
-            # if the allergen is not a part of an ingredient, then added to the list 
+                            if not (sub in allergen):
+                                allergen.append(sub)
+
+
+            # if the allergen is not a part of an ingredient, then added to the list
             if notIN == False:
                 allergen.append(a)
-
 
     return allergen
 
@@ -251,15 +254,15 @@ def nutritionalInformation(soup):
                 nutritionalInformation.setServingSize(
                     table_rows[td[0]].td.text.strip().replace('\u200e', ''))
 
-            elif 'Fett' in td[1].text:
+            if 'Fett' in td[1].text:
                 nutritionalInformation.setFats(
                     table_rows[td[0]].td.text.strip().replace('\u200e', ''))
 
-            elif 'Kohlenhydrate' in td[1].text:
+            if 'Kohlenhydrate' in td[1].text:
                 nutritionalInformation.setCarbohydrates(
                     table_rows[td[0]].td.text.strip().replace('\u200e', ''))
 
-            elif 'Eiweiß' in td[1].text:
+            if 'Eiweiß' in td[1].text:
                 nutritionalInformation.setProteins(
                     table_rows[td[0]].td.text.strip().replace('\u200e', ''))
 
@@ -273,7 +276,6 @@ def country(soup):
     info = soup.find('h5', text='Allgemeine Produktinformationen')
 
     if info:
-        country='None'
         table_rows = info.find_parent('div').table.find_all('tr')
 
         for td in enumerate(table_rows):
@@ -289,8 +291,7 @@ def country(soup):
             country = 'USA'
         if country == 'Vereinigte Königreich' or country == 'Vereinigtes Königreich':
             country = 'UK'
-        
-        
+
     return country
 
 
@@ -315,7 +316,7 @@ def price(soup):
         price = soup.find(
             'span', attrs={'class': 'a-offscreen'}).text.strip()
         if not('€' in price):
-                price='None'
+            price = 'None'
     except:
         price = 'None'
 
@@ -340,9 +341,9 @@ def name(soup):
         if '-' in name:
             name = name.split('-')[0]
         if '–' in name:
-            name=name.split('–')[0]
+            name = name.split('–')[0]
         if '(' in name:
-            name=name.split('(')[0]
+            name = name.split('(')[0]
         if '|' in name:
             name = name.split('|')[0]
         if '-' in name:
@@ -355,7 +356,7 @@ def name(soup):
 
 
 def get_soup(url):
-    
+
     driver = webdriver.Chrome(
         executable_path='C:\Program Files (x86)\chromedriver.exe')
     driver.get(url)
@@ -374,6 +375,7 @@ def get_ASIN(url):
     return asin
 
 
+# Extracting the food product and its information
 def get_product(url):
 
     foodproduct = foodProduct()
@@ -396,7 +398,7 @@ def get_product(url):
 
     if foodproduct.getIngredients() == 'None':
         foodproduct.setAllergens(allergies_table(soup))
-        if foodproduct.getAllergens()!='None':
+        if foodproduct.getAllergens() != 'None':
             foodproduct.setIngredients(foodproduct.getAllergens())
     else:
         foodproduct.setAllergens(allergens(soup, foodproduct.getIngredients()))

@@ -22,7 +22,8 @@ def addfoodProduct(fproduct):
     nutritionalInformation = Namespace(
         'https://schema.org/NutritionInformation#')
     individualProduct = Namespace('https://schema.org/IndividualProduct#')
-    dbpediaResource = Namespace('http://de.dbpedia.org/resource/')
+    dbpediaResource = Namespace('http://dbpedia.org/resource/')
+    
 
     schema = SDO
     rdf = RDF
@@ -66,10 +67,12 @@ def addfoodProduct(fproduct):
     foodGraph.add((country, rdfs.label, countryName))
 
     # Creating nodes for the nuritional information
-    nutritionalFacts = BNode(value='nutritional Information of'+fproduct.getAsin())
+    nutritionalFacts = BNode(
+        value='nutritional Information of'+fproduct.getAsin())
     servingSize = Literal(fproduct.getNutritional_information().servingSize)
     fats = Literal(fproduct.getNutritional_information().fats)
-    carbohydrates = Literal(fproduct.getNutritional_information().carbohydrates)
+    carbohydrates = Literal(
+        fproduct.getNutritional_information().carbohydrates)
     proteins = Literal(fproduct.getNutritional_information().protein)
 
    # Adding the nutritional information
@@ -84,20 +87,23 @@ def addfoodProduct(fproduct):
         (nutritionalFacts, nutritionalInformation['carbohydrateContent'], carbohydrates))
 
     # Adding the ingredients and its subingredients
-    ingr= Namespace('https://example.org/food/ingredient/')
-    ingrWithSubs = Namespace('https://example.org/food/'+fproduct.getAsin()+'/ingredient/')
+    ingr = Namespace('https://example.org/food/ingredient/')
+    ingrWithSubs = Namespace(
+        'https://example.org/food/'+fproduct.getAsin()+'/ingredient/')
 
     foodGraph.bind('ing', ingr)
-    foodGraph.bind('ingWithSub',ingrWithSubs)
+    foodGraph.bind('ingWithSub', ingrWithSubs)
 
     if fproduct.getIngredients() != 'None':
         for i in fproduct.getIngredients():
 
             if i.subingredient:
-                ingredient = URIRef(ingrWithSubs[i.ingredient.lower().replace(' ', '')])
+                ingredient = URIRef(
+                    ingrWithSubs[i.ingredient.lower().replace(' ', '')])
             else:
-                ingredient = URIRef(ingr[i.ingredient.lower().replace(' ', '')])
-                 
+                ingredient = URIRef(
+                    ingr[i.ingredient.lower().replace(' ', '')])
+
             ingredientName = Literal(
                 i.ingredient.lower().title(), datatype=xsd['string'])
 
@@ -121,15 +127,18 @@ def addfoodProduct(fproduct):
                     foodGraph.add((subing, rdf.type, food['Ingredient']))
                     foodGraph.add((subing, rdfs.label, subIngredientName))
 
-        # Adding the class allergen
-        allergen = URIRef(dbpediaResource['Allergen'])
-        foodGraph.add((allergen, rdfs.label, Literal('Allergen', lang='de')))
+        # Adding allergen to the KG
+        if fproduct.getAllergens() != 'None':
 
-        # Adding the allergens from the ingredients
-        for a in fproduct.getAllergens():
-    
-            allergy = URIRef(ingr[a.lower().replace(' ', '')])
-            foodGraph.add((allergy, rdf.type, allergen))
+            allergen = URIRef(dbpediaResource['Allergen'])
+            foodGraph.add(
+                (allergen, rdfs.label, Literal('Allergen', lang='de')))
+
+            # Adding the allergens from the ingredients
+            for a in fproduct.getAllergens():
+
+                allergy = URIRef(ingr[a.lower().replace(' ', '')])
+                foodGraph.add((allergy, rdf.type, allergen))
 
     # Add the rating and the reviewNumber
     foodGraph.add((foodproduct, schema['ratingValue'], Literal(
@@ -155,14 +164,13 @@ def get_url():
 
 def buildGraph():
 
-    # Check if Turtle file exists
-    # if yes, parse this file
+    # Check if a Turtle file exists
+    # if yes, parse this file --> useful by duplicates
     if Path('foodGraph.ttl').is_file():
         exists = True
         foodGraph.parse('foodGraph.ttl', format='ttl')
     else:
         exists = False
-
 
     while 1:
 
@@ -170,28 +178,24 @@ def buildGraph():
         # Break the process if the user enter an empty url
         url = get_url()
 
-        if url =='':
+        if url == '':
             break
 
         # if the KG exists, then check if the food product is allready in the Knowledge Graph
-        # if yes, ingnore this url
+        # if yes,skip this url
         # else, fetch all information to this product and add it to the KG
         node = Literal(url, datatype=XSD['string'])
-        if exists and  (None, None, node) in foodGraph:
+        if exists and (None, None, node) in foodGraph:
             continue
-    
+
         fp = get_product(url)
         addfoodProduct(fp)
         serializeGraph()
     cleanKG()
-        
-
-
 
 
 def main():
     buildGraph()
-    
 
 
 if __name__ == '__main__':
