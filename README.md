@@ -21,17 +21,19 @@ The software implementation includes four programs:
 - **cleanData.py**: Program for cleaning the data in the knowledge graph
 - **FoodProduct.py**: Program includes helpful classes
 ____
-
-
+&nbsp; 
 ## Documentation BuildingKG.py
+&nbsp; 
 
 ### Notes
 - The ingredients without sub-ingredients have the namespace 'https://example.org/food/ingredient/' (prefix ing)
 - The ingredients without sub-ingredients have the namespace 'https://example.org/food/ingredient/' (prefix ingWithSub**I**, **I**∈ℕ)
  
-### The important used libraries 
-  
-1. RDFLib for working with RDF and creating the knowledge graph
+&nbsp; 
+ 
+### Improtant Libraries 
+ 
+1. RDFLib is a Python library for working with RDF and creating the knowledge graph
 
 - The used Objects from RDFLib
   >- `graph=Graph()` creates a container object for storing the triples/statments --> in the project the Graph is strored in the variable `foodGraph`
@@ -47,9 +49,10 @@ ____
   >- `graph.predicates()` extracts all predicates from the graph
   >- `graph.serialize()` is for storing the graph in a file
   >- `graph.parse()` is for reading and loading an existing rdf graph in a program
-  
-  
-### The created functions 
+ 
+ &nbsp;
+ 
+### Functions 
    
  |Function|Description|Return value|
  |:---|:---|:---|
@@ -58,14 +61,15 @@ ____
  |`addfoodProduct(fproduct)`|The function addfoodProduct adds a food product and its information into the graph|No value|
  |`serializeGraph()`|A function for saving the graph as a ttl file|No value|
   
-
 ____
-
+&nbsp; 
+ 
 ## Documentation getFoodProduct.py
-
-### The important used libraries
+&nbsp;
+ 
+### Important Libraries  
   
-1. Selenium for controlling and automating a web browser by using a webdriver (ChromeDriver).
+1. Selenium is for controlling and automating a web browser by using a webdriver (ChromeDriver)
  
 - The used objects
   >- `driver=webdriver.Chrome ('C:\Program Files (x86)\chromedriver.exe)'` for creating an instance of Chrome WebDriver 
@@ -74,30 +78,31 @@ ____
   >- `driver.page_source()` gives the HTML code of the website
   >- `driver.quit()` closes the browser and shuts down the ChromeDriver 
 
-  
+
 2. Beautiful Soup for scraping information from websites
-/
+
 - The used object
     >- `soup=BeautifulSoup(source, 'html.parser')` creates an instance of BeautifulSoup. This instance contains the parsed HTML code (here in source)
 - The used methods
     >- `soup.find()` finds a tag with specific attributes
     >- `soup.find_all()` finds all elements of a specific tag typ 
-    >- 'soup.find_parent()' finds the parent tag of specific tag 
-
-
-### The created functions
+    >- 'soup.find_parent()' finds the parent tag of specific tag
+ 
+&nbsp; 
+ 
+### Functions
   
 |Function|Description|Return value|
 |:---|:---|:---|
-|`get_product(url)`| This function will be executed first if you run the program getFoodProduct.py. It executes the necessary functions that return the scraped information from the webpages. This function stores the information into an object `foodproduct` which is an instance of the classe `foodIngredient` |`foodproduct`|
-|`get_ASIN(url)`| This function gets as an input an URL. It extracts the ASIN from the URL and saves it into the variable `asin`|`asin`|
-|`get_soup(url)`|This function uses the Chrome Web-Driver to fetch the HTML code from the Amazon webpage and saves it into a variable `soup`.This variable is the input of the follow up functions.|`soup`|
-|`name(soup)`|This function extracts the product's name from a tag with the id='productTitle'. The name of the product will be saved in the variable `name`|`name`|
-|`description(soup)`|This function extracts the product's description from a tag with the id='productTitle'. The description of the product will be saved in the variable `description`|`description`|
+|`get_product(url)`| This function will be executed first if you run the program getFoodProduct.py. It executes the necessary functions in an specific order. These functions return the scraped information from the Amazon websites. This function stores the information into an object `foodproduct` which is an instance of the classe `foodProduct` |`foodproduct`|
+|`get_ASIN(url)`| It extracts the ASIN from the URL and saves it into the variable `asin`|`asin`|
+|`get_soup(url)`|This function uses the ChromeDriver to fetch and parse the HTML code from the Amazon webpage. The parsed HTML code will be saved it into a variable `soup`.This variable will be the input of the follow up functions.|`soup`|
+|`name(soup)`|This function extracts the product's name from a tag that has the id='productTitle'. The name of the product will be saved in the variable `name`|`name`|
+|`description(soup)`|This function extracts the product's description from a tag that has the id='productTitle'. The description of the product will be saved in the variable `description`|`description`|
 |`price(soup)`|This function extracts the product's price from a tag span with the class= 'a-offscreen'. The price of the product will be saved in the variable `price`|`price`|
-|`brand(soup)`|This function extracts the product's brand from a table with the headline 'Allgemeine Produktinformationen'. The brand is located in a table row the a content 'Marke'. The brand of the product will be saved in the variable `brand`|`brand`|
-|`country(soup)`|This function extracts the product's origin from a table with the headline 'Allgemeine Produktinformationen'. The origin is located in a table row the a content 'Ursprungsland' or 'Herkunftsland'. The origin of the product will be saved in the variable `country`|`country`|
-|`nutritionalInformation(soup)`|It extracts the product's nutritional information from a table with the headline 'Nährwertangaben'. The nutritional information are located in the table rows that have the contents 'Portionsgröße', 'Fett', 'Kohlenhydrate' and 'Eiweiß'. The nutritional information will be saved in an object `nutritionalInformation` which is an instance of the class `nutritional_information`|`nutritionalInformation`|
+|`brand(soup)`|This function extracts the product's brand from the table 'Allgemeine Produktinformationen'. The brand is located in the second column of a table row that has the first column entry 'Marke'. The brand of the product will be saved in the variable `brand`|`brand`|
+|`country(soup)`|This function extracts the product's origin from a table 'Allgemeine Produktinformationen'. The origin is located in the entry of the second table column of a row that has the first column entry 'Ursprungsland' or 'Herkunftsland'. The origin of the product will be saved in the variable `country`|`country`|
+|`nutritionalInformation(soup)`|It extracts the product's nutritional information from the table 'Nährwertangaben'. The nutritional information are located in the table rows that have the column entries 'Portionsgröße', 'Fett', 'Kohlenhydrate' and 'Eiweiß'. The nutritional information will be saved in an object `nutritionalInformation` which is an instance of the class `nutritional_information`|`nutritionalInformation`|
 |`amazon_category(soup)`|This function extracts the Amazon category from the breadcrumbs which are links of the categories on Amazon. The category will be saves in the variable `category`|`category`|
  |`ingredients(soup)`|This function extracts the ingredients from the food product which are located in a section 'Bestandteile' on the wegpage. The ingredients will stored in a list `ingredients`.|`ingredients`|
  |`allergens(soup, foodIngredients)`|It extracts the allergens from the scraped ingredients and the allery table and stores them into the variable `allergens`|`allergens`|
@@ -105,14 +110,19 @@ ____
  |`rating(soup)`|It extracts the star rating from the tag span with the class='a-icon-alt' and saves this into `review_score`|`review_score`|
  
 ___
-  
+&nbsp; 
+ 
 ## Documentation cleanData.py
-  
-### The important used libraries
 
+&nbsp; 
+ 
+### Improtant Libraries
+ 
 1. RDFLib for working with RDF and creating the knowledge graph
 
-### The created functions 
+&nbsp; 
+ 
+### Functions
   
 |Function|Description|
 |:---|:---|
@@ -123,18 +133,84 @@ ___
 |`get_asin()`|This function is used in `removeUncessaryData()` and `changeIncorrectData()`. It fetchs the product's ASIN to identify the namespace of an ingredient that has sub-ingredients|
 
 ___
+ 
+&nbsp; 
+ 
 ## Documentation FoodProduct.py
+ 
+ 1. class `foodProduct` 
+ 2. class `nutritional_information`
+ 3. class `foodIngredient`
+ 
+&nbsp; 
+ 
+### 1. Class foodProduct
 
-This Python file contain three classes:
-  
- - `foodProduct` 
- - `nutritional_information`
- - `foodIngredient`
+The class `foodProduct` represents a food product from Amazon. It contains private attributes and methods. Some attributes are instance of the class `nutritional_information` and the class `foodIngredient`
 
+ - The classe's attributes
+ 
+>|Attributes|Datatyp|
+>|:---|:---|
+>|`name`|string|
+>|`description`|string|
+>|`brand`|string|
+>|`price`|string|
+>|`asin`|string|
+>|`url`|string|
+>|`category`|string|
+>|`country_of_origin`|string|
+>|`ingredients`|list of instances of `foodIngredient`|
+>|`allergen`|list of strings|
+>|`nutritional_information`|`nutritional_information`|
+>|`reviewNumber`|unsigned integer|
+>|`rating`|string|
+ 
 
-The class `foodProduct` represents a food product from Amazon. It has private attributes which are assigned with a value through the use of the setter methods. The getter methods are used for accessing the attributes' values.
+- Types of methods:
+ 
+ >|Type of methods|Defintion|Description|
+ >|:---|:---|:---|
+ >|Getter methods|`get*Attribute*()` |For each attribute exits a getter method. It returns the value of the attribute|
+ >|Setter methods|`set*Attribute*()` |For each attribute exits a setter method. It sets the value of the attribute| 
+ 
+&nbsp; 
+ 
+### 2. Class foodIngredient
+ 
+This class is used to store ingredients and their sub-ingredients in a compact way. It has public attributes and methods
+ 
+- The classe's attributes
+ 
+>|Attributes|Datatyp|
+>|:---|:---|
+>|`ingredient`|string|
+>|`sub-ingredients`|list of strings|
+ 
+- Types of methods:
+ 
+ >|Type of methods|Defintion|Description|
+ >|:---|:---|:---|
+ >|Setter methods|`set*Attribute*()` |For each attribute exits a setter method. It sets the value of the attribute|
 
-The class `foodProduct` uses the class `nutritional_information` for the nutritional information and `foodIngredient` for the ingredients.
+&nbsp; 
 
+### 3. Class nutritional_information
 
+This class is used to store the nutritional information (serving size, protein, fat, carbohydrates). It has public attributes and methods
+ 
+ - The classe's attributes
+ 
+>|Attributes|Datatyp|
+>|:---|:---|
+>|`servingSize`|string|
+>|`fat`|string|
+>|`carbohydrate`|string|
+>|`protein`|string|
+
+- Types of methods:
+ 
+ >|Type of methods|Defintion|Description|
+ >|:---|:---|:---|
+ >|Setter methods|`set*Attribute*()` |For each attribute exits a setter method. It sets the value of the attribute|
 
