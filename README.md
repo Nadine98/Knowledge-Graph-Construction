@@ -1,18 +1,19 @@
 # Knowledge Graph Construction 
 This is a software implementation for the project 'Knowledge Graph Construction'. The project’s goal is to build a Knowledge Graph (KG) about food products sold on Amazon. For the construction, the Resource Description Framework (RDF) was used 
-<b>
+
+&nbsp; 
 
 ## Installation
 The program can be executed by cloning this git-repository and running the **builddKG.py** program. This program can be executed in the Windows command shell (cmd) or in a development environment (IDE) that supports a Python Interpreter like PyCharm or Visual Studio Code.
 
-
+&nbsp;
 
 >**Notes: This project's implementation uses the latest version of Python (Python 3.10) so make sure you use this or a compatible version. Moreover, the program was only tested on the operation system Windows. So the program’s execution could lead to problems on Linux or Mac OS because of the naming conventions of the paths. In addition, you have to ensure, you installed all imported libraries in the programs as well as the Chrome Web-Driver on your system.**
 
-
+&nbsp; 
 
 ## Program execution
-After running the program **buildKG.py** in the command shell, the program asks you to enter an URL of a food product that is sold on Amazon. This entry causes the execution of the program getFoodProduct.py, it extracts the HTML code of the webpage and scraps all the necessary product information. After the data extraction, the program ‘BuildKG.py’ creates the knowledge graph and exports it to a Turtle file (foodGraph.ttl). This whole procedure is repeated  until the user enters an empty URL. In this case, the Data Cleaning program (cleanData.py) will be executed. This program interact with the user in the way it takes the user’s input to modify and remove data from the knowledge graph.
+After running the program **buildKG.py** in the command shell, the program asks you to enter an URL of a food product that is sold on Amazon. This entry causes the execution of the program getFoodProduct.py, it extracts the HTML code of the webpage and scraps all the necessary product information. After the data extraction, the program ‘BuildKG.py’ creates the knowledge graph and exports it in a Turtle file (foodGraph.ttl). This whole procedure is repeated  until the user enters an empty URL. In this case, the Data Cleaning program (cleanData.py) will be executed. This program interact with the user in the way it takes the user’s input to modify and remove data from the knowledge graph.
 
 
 The software implementation includes four programs:
@@ -62,8 +63,7 @@ ____
  |`serializeGraph()`|A function for saving the graph as a ttl file|No value|
   
 ____
-&nbsp; 
- 
+
 ## Documentation getFoodProduct.py
 &nbsp;
  
@@ -134,13 +134,7 @@ ___
 
 ___
  
-&nbsp; 
- 
 ## Documentation FoodProduct.py
- 
- 1. class `foodProduct` 
- 2. class `nutritional_information`
- 3. class `foodIngredient`
  
 &nbsp; 
  
@@ -213,4 +207,9 @@ This class is used to store the nutritional information (serving size, protein, 
  >|Type of methods|Defintion|Description|
  >|:---|:---|:---|
  >|Setter methods|`set*Attribute*()` |For each attribute exits a setter method. It sets the value of the attribute|
+___
+## Documentation foodGraph.ttl
 
+The created RDF graph is composed of triple statements that have the from <subject> <predicate> <object>. The knowledge graph is serialized in Turtle (Terse RDF Triple Language). This syntax. 
+
+The serialization is simple. A triple is serialized by writing the subject, the predicate, and the object separated by whitespace and terminated with a period . at the end
