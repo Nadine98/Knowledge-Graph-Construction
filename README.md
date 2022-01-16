@@ -57,7 +57,7 @@ ____
  |Function|Description|Return value|
  |:---|:---|:---|
  |`buildGraph()`| This function will be executed first if you run the program BuildingKG.py. It executes the necessary functions for the KG's creation. In order to avoid duplicates this function also checks if a specific product (by its URL) is already in the graph|No value|
- |`get_url()`| This function asks the user to enter an URL of the food product. Thereby it checks whether the URL is an Amazon URL or not. This URL will be used in the imported function `get_product(url)`|Entered URL|
+ |`get_url()`| This function asks the user to enter an URL of the food product. Thereby it checks whether the URL is an Amazon URL or not. This URL will be used in the function `get_product(url)`|Entered URL|
  |`addfoodProduct(fproduct)`|The function addfoodProduct adds a food product and its information into the graph|No value|
  |`serializeGraph()`|A function for saving the graph as a ttl file|No value|
   
