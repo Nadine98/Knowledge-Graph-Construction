@@ -29,7 +29,7 @@ def addfoodProduct(fproduct):
     rdfs = RDFS
     xsd = XSD
 
-    # Bind the namespaces to a prefix
+    # Bind the namespaces to prefixes
     foodGraph.bind('', ex)
     foodGraph.bind('food', food)
     foodGraph.bind('ip', individualProduct)
