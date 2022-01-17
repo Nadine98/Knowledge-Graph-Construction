@@ -212,4 +212,46 @@ ___
 
 The created RDF graph is composed of triple statements that have the from <subject> <predicate> <object>. The knowledge graph is serialized in Turtle (Terse RDF Triple Language). This syntax. 
 
-The serialization is simple. A triple is serialized by writing the subject, the predicate, and the object separated by whitespace and terminated with a period . at the end
+### The synatax of the Turtle: 
+
+ |synatax | Definition|
+ |:---|:---|
+ |`<subject> <predicate> <ocject> .`| Is the triple structure of a statement |
+ |`;`| Is used for statments that share the same subject. The first statement ends with it and the following statements follow without the subject|
+ |`,`| Is used for statements that share the same suject and predicate. The object are seperated by a comma||
+ |`a`| Is a abbrevation of the predicate rdf:type (is_a)|
+ |`:`|Is used if an URI Node is abbrevated through CURI| 
+ 
+ 
+ ### URI 
+ 
+ - URI can be used for locating a resource of a subject, predicate or an object
+ - An URI can be serialized by enclosing it in angle brackets
+ 
+ |\< https://example.org \>|
+ |:---|
+ 
+ ## CURI
+ 
+- CURI is a synatax for abbrevating URIs. 
+- CURI's Declaration 
+ 
+ >|@PREFIX|'abbreviation'|:|\< URI \>|
+ >|:---|:---|:---|:---|
+ 
+- CURI's in the Turtle File
+ 
+ >|CURIs| Description|
+ >|:---|:---|
+>|@prefix : \< https://example.org/food/ \> .| A CURI for all food product in the knowledge graph|
+>|@prefix dbr: \< http://dbpedia.org/resource /> .|A CURI for all resources form dbpedia|
+>|@prefix food: \< http://data.lirmm.fr/ontologies/food# \> .| A CURI for all resources from the ontology *food*|
+>|@prefix ing: \< https://example.org/food/ingredient/ \> .| A CURI for all ingredients without sub-ingredients|
+>|@prefix ingWithSub*I*: \<https://example.org/food/*ProductASIN*/ingredient/ \> . (I∈ℕ)|A CURI for ingredients (with sub-ingredients)  of a sprecific food product (identified through ASIN).|
+>|@prefix ip: \< https://schema.org/IndividualProduct# \> .|A CURI for all resources from the ontology *Schema.org/IndividualProduct*|
+>|@prefix ni: \< https://schema.org/NutritionInformation# \> .|A CURI for all resources from the ontology *Schema.org/NutritionInformation*|
+>|@prefix rdfs: \< http://www.w3.org/2000/01/rdf-schema# \> .|A CURI for every usage of the RDF-Schema |
+>|@prefix schema: \< http://schema.org/ \> . |A CURI for all resources from the ontolgy *Schema.org*|
+>|@prefix xsd: \< http://www.w3.org/2001/XMLSchema# \> .|A CURI for every usage of the XML Schema |
+ 
+ 
