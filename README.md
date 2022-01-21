@@ -225,8 +225,8 @@ The created RDF graph is composed of triple statements that have the from <subje
  
  ### URI 
  
- - URI can be used for locating a resource of a subject, predicate or an object
- - An URI can be serialized by enclosing it in angle brackets
+ - URI is used for locating a resource of a subject, predicate or an object
+ - An URI is serialized by enclosing it in angle brackets
  
  |\< https://example.org \>|
  |:---|
