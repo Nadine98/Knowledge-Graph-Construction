@@ -89,7 +89,7 @@ def allergens(soup, foodIngredients):
         for a in table:
             notIN = False
 
-            for i in foodIngredients:
+            for i in foodIngredients: 
 
                 # Check if the allergen from the table is in the ingredient list
                 if a.lower() in i.ingredient.lower():
