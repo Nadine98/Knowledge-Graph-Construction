@@ -248,7 +248,7 @@ The created RDF graph is composed of triple statements that have the from <subje
 >|@prefix dbp: \< http://dbpedia.org/property/ \> .|A CURI for all properties form dbpedia|
 >|@prefix food: \< http://data.lirmm.fr/ontologies/food# \> .| A CURI for all resources from the ontology *food*|
 >|@prefix ing: \< https://example.org/food/ingredient/ \> .| A CURI for all ingredients without sub-ingredients|
->|@prefix ingWithSub*I*: \<https://example.org/food/*ProductASIN*/ingredient/ \> . (I∈ℕ)|A CURI for ingredients (with sub-ingredients)  of a sprecific food product (identified through ASIN).|
+>|@prefix ingWithSub**I**: \<https://example.org/food/*ProductASIN*/ingredient/ \> . (I∈ℕ)|A CURI for ingredients (with sub-ingredients)  of a sprecific food product (identified through ASIN).|
 >|@prefix ip: \< https://schema.org/IndividualProduct# \> .|A CURI for all properties from the ontology *Schema.org/IndividualProduct*|
 >|@prefix ni: \< https://schema.org/NutritionInformation# \> .|A CURI for all properties from the ontology *Schema.org/NutritionInformation*|
 >|@prefix rdfs: \< http://www.w3.org/2000/01/rdf-schema# \> .|A CURI for every usage of the RDF-Schema |
