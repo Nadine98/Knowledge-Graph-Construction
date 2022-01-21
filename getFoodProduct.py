@@ -136,9 +136,6 @@ def ingredients(soup):
 
         # Remove/Change words and characters from the ingredient list to create an unified structure
 
-        # In the ingredient list, each ingredient is separated by a comma --> e.g. Mehl, Zucker, Wasser,...
-        # The sub-ingredients of in ingredient are between round brackets --> e.g. Sauerteig (Weizenmehl,Roggenmehl)
-
         if 'Kann' in contents:
             contents = contents.replace('(Kann', ',')
             contents = contents.replace('Kann', '')
@@ -185,6 +182,8 @@ def ingredients(soup):
 # -------------------------------------------------------------------------------------------------------------------------------
 
         # Extract the ingredients by reading every single character from the ingredient list
+        # In the ingredient list, each ingredient is separated by a comma --> e.g. Mehl, Zucker, Wasser,...
+        # The sub-ingredients of in ingredient are between round brackets --> e.g. Sauerteig (Weizenmehl,Roggenmehl)
         for index, content in enumerate(contents):
 
             # Ignore the word before ':'
