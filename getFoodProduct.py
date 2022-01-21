@@ -276,19 +276,19 @@ def nutritionalInformation(soup):
 
         for td in enumerate(table_rows):
 
-            if 'Portionsgröße' in td[1].text:
+            if 'Portionsgröße ' in td[1].text:
                 nutritionalInformation.setServingSize(
                     table_rows[td[0]].td.text.strip().replace('\u200e', ''))
 
-            if 'Fett' in td[1].text:
+            if 'Fett ' in td[1].text:
                 nutritionalInformation.setFats(
                     table_rows[td[0]].td.text.strip().replace('\u200e', ''))
 
-            if 'Kohlenhydrate' in td[1].text:
+            if 'Kohlenhydrate ' in td[1].text:
                 nutritionalInformation.setCarbohydrates(
                     table_rows[td[0]].td.text.strip().replace('\u200e', ''))
 
-            if 'Eiweiß' in td[1].text:
+            if 'Eiweiß ' in td[1].text:
                 nutritionalInformation.setProteins(
                     table_rows[td[0]].td.text.strip().replace('\u200e', ''))
 
@@ -435,7 +435,7 @@ def get_product(url):
     foodproduct.setRating(rating(soup))
     foodproduct.setIngredients(ingredients(soup))
 
-    # If there aren't ingredients then extraxt the allergens from the allergy table 
+    # If there aren't ingredients then extraxt the allergens from the allergy table
     # and add the allergens to the ingredients
     if foodproduct.getIngredients() == 'None':
         foodproduct.setAllergens(allergies_table(soup))
