@@ -159,7 +159,7 @@ def ingredients(soup):
         if '.' in contents:
             contents = contents.replace('.', '')
         if '*' in contents:
-            contents = contents.replace('*:', '')
+            contents = contents.replace('*', ' ')
         if 'und ' in contents:
             contents = contents.replace('und', ',')
         if 'aus ' in contents:
