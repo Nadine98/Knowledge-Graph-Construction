@@ -8,12 +8,12 @@ The program can be executed by cloning this git-repository and running the **bui
 
 &nbsp;
 
->**Notes: This project's implementation uses the latest version of Python (Python 3.10) so make sure you use this or a compatible version. Moreover, the program was only tested on the operation system Windows. So the program’s execution could lead to problems on Linux or Mac OS because of the naming conventions of the paths. In addition, you have to ensure, you installed all imported libraries in the programs as well as the Chrome Web-Driver on your system.**
+>**Notes: The KG's implementation uses the latest version of Python (Python 3.10) so make sure you use this or a compatible version. Moreover, the program was only tested on the windows operating system. So the program’s execution could lead to problems on Linux or Mac OS because of the naming conventions of the paths. In addition, you have to ensure, you installed all imported libraries in the programs as well as the ChromeDriver.**
 
 &nbsp; 
 
 ## Program execution
-After running the program **buildKG.py** in the command shell, the program asks you to enter an URL of a food product that is sold on Amazon. This entry causes the execution of the program getFoodProduct.py, it extracts the HTML code of the webpage and scraps all the necessary product information. After the data extraction, the program ‘BuildKG.py’ creates the knowledge graph and exports it in a Turtle file (foodGraph.ttl). This whole procedure is repeated  until the user enters an empty URL. In this case, the Data Cleaning program (cleanData.py) will be executed. This program interact with the user in the way it takes the user’s input to modify and remove data from the knowledge graph.
+After running the program **buildKG.py** in the command shell, the program asks you to enter an URL of a food product that is sold on Amazon. This entry causes the execution of the program getFoodProduct.py, it extracts the HTML code of the web page and scraps all the necessary product information. After the data extraction, the program ‘BuildKG.py’ creates the knowledge graph and exports it into a Turtle file (foodGraph.ttl). This whole procedure is repeated until the user enters an empty URL. In this case, the Data Cleaning program (cleanData.py) will be executed. This program interact with the user in the way it takes the user’s input to modify or remove data from the knowledge graph.
 
 
 The software implementation includes four programs:
@@ -37,7 +37,7 @@ ____
 1. RDFLib is a Python library for working with RDF and creating the knowledge graph
 
 - The used Objects from RDFLib
-  >- `graph=Graph()` creates a container object for storing the triples/statments --> in the project the Graph is strored in the variable `foodGraph`
+  >- `graph=Graph()` creates a container object for storing the triples/statments 
   >- `Namespace()` is for creating URIs in a namespace
   >- `URIRef()` is a node where the exact URI is known
   >- `BNode()` is a node where the exact URI is not known
@@ -57,8 +57,8 @@ ____
    
  |Function|Description|Return value|
  |:---|:---|:---|
- |`buildGraph()`| This function will be executed first if you run the program BuildingKG.py. It executes the necessary functions for the KG's creation. In order to avoid duplicates this function also checks if a specific product (by its URL) is already in the graph|No value|
- |`get_url()`| This function asks the user to enter an URL of the food product. Thereby it checks whether the URL is an Amazon URL or not. This URL will be used in the function `get_product(url)`|Entered URL|
+ |`buildGraph()`| is the first executed function. It runs the other functions which are necessary for the KG's creation. In order to avoid duplicates this function also checks if a specific product (by its URL) is already in the graph|No value|
+ |`get_url()`| This function asks the user to enter an URL. Thereby it checks whether the URL is an Amazon URL or not. This URL will be used in the function `get_product(url)`|Entered URL|
  |`addfoodProduct(fproduct)`|The function addfoodProduct adds a food product and its information into the graph|No value|
  |`serializeGraph()`|A function for saving the graph as a ttl file|No value|
   
@@ -84,9 +84,9 @@ ____
 - The used object
     >- `soup=BeautifulSoup(source, 'html.parser')` creates an instance of BeautifulSoup. This instance contains the parsed HTML code (here in source)
 - The used methods
-    >- `soup.find()` finds a tag with specific attributes
+    >- `soup.find()` finds a certain tag 
     >- `soup.find_all()` finds all elements of a specific tag typ 
-    >- 'soup.find_parent()' finds the parent tag of specific tag
+    >- 'soup.find_parent()' finds the parent tag of a tag
  
 &nbsp; 
  
@@ -94,9 +94,9 @@ ____
   
 |Function|Description|Return value|
 |:---|:---|:---|
-|`get_product(url)`| This function will be executed first if you run the program getFoodProduct.py. It executes the necessary functions in an specific order. These functions return the scraped information from the Amazon websites. This function stores the information into an object `foodproduct` which is an instance of the classe `foodProduct` |`foodproduct`|
+|`get_product(url)`| This function will be executed first if you run the program getFoodProduct.py. It executes the necessary functions in an specific order. These functions return the scraped information from the Amazon websites. Any information will be stored into an object `foodproduct` which is an instance of the classe `foodProduct` |`foodproduct`|
 |`get_ASIN(url)`| It extracts the ASIN from the URL and saves it into the variable `asin`|`asin`|
-|`get_soup(url)`|This function uses the ChromeDriver to fetch and parse the HTML code from the Amazon webpage. The parsed HTML code will be saved it into a variable `soup`.This variable will be the input of the follow up functions.|`soup`|
+|`get_soup(url)`|This function uses the ChromeDriver to fetch and parse the HTML code from the Amazon webpage. The parsed HTML code will be saved it into a variable `soup`.This variable is used as the input of the follow up functions.|`soup`|
 |`name(soup)`|This function extracts the product's name from a tag that has the id='productTitle'. The name of the product will be saved in the variable `name`|`name`|
 |`description(soup)`|This function extracts the product's description from a tag that has the id='productTitle'. The description of the product will be saved in the variable `description`|`description`|
 |`price(soup)`|This function extracts the product's price from a tag span with the class= 'a-offscreen'. The price of the product will be saved in the variable `price`|`price`|
@@ -172,7 +172,7 @@ The class `foodProduct` represents a food product from Amazon. It contains priva
  
 ### 2. Class foodIngredient
  
-This class is used to store ingredients and their sub-ingredients in a compact way. It has public attributes and methods
+This class is used to store the ingredients and their sub-ingredients in a compact way. It has public attributes and methods
  
 - The classe's attributes
  
@@ -220,7 +220,7 @@ The created RDF graph is composed of triple statements that have the from <subje
  |`;`| Is used for statments that share the same subject. The first statement ends with it and the following statements follow without the subject|
  |`,`| Is used for statements that share the same suject and predicate. The object are seperated by a comma||
  |`a`| Is a abbrevation of the predicate rdf:type (is_a)|
- |`:`|Is used if an URI Node is abbrevated through CURI| 
+ |`:`| Is used if an URI is abbrevated through a CURI| 
  
  
  ### URI 
@@ -244,14 +244,15 @@ The created RDF graph is composed of triple statements that have the from <subje
  >|CURIs| Description|
  >|:---|:---|
 >|@prefix : \< https://example.org/food/ \> .| A CURI for all food product in the knowledge graph|
->|@prefix dbr: \< http://dbpedia.org/resource /> .|A CURI for all resources form dbpedia|
+>|@prefix dbr: \< http://dbpedia.org/resource/ \> .|A CURI for all resources form dbpedia|
+>|@prefix dbp: \< http://dbpedia.org/property/ \> .|A CURI for all properties form dbpedia|
 >|@prefix food: \< http://data.lirmm.fr/ontologies/food# \> .| A CURI for all resources from the ontology *food*|
 >|@prefix ing: \< https://example.org/food/ingredient/ \> .| A CURI for all ingredients without sub-ingredients|
 >|@prefix ingWithSub*I*: \<https://example.org/food/*ProductASIN*/ingredient/ \> . (I∈ℕ)|A CURI for ingredients (with sub-ingredients)  of a sprecific food product (identified through ASIN).|
->|@prefix ip: \< https://schema.org/IndividualProduct# \> .|A CURI for all resources from the ontology *Schema.org/IndividualProduct*|
->|@prefix ni: \< https://schema.org/NutritionInformation# \> .|A CURI for all resources from the ontology *Schema.org/NutritionInformation*|
+>|@prefix ip: \< https://schema.org/IndividualProduct# \> .|A CURI for all properties from the ontology *Schema.org/IndividualProduct*|
+>|@prefix ni: \< https://schema.org/NutritionInformation# \> .|A CURI for all properties from the ontology *Schema.org/NutritionInformation*|
 >|@prefix rdfs: \< http://www.w3.org/2000/01/rdf-schema# \> .|A CURI for every usage of the RDF-Schema |
->|@prefix schema: \< http://schema.org/ \> . |A CURI for all resources from the ontolgy *Schema.org*|
+>|@prefix schema: \< http://schema.org/ \> . |A CURI for all resources and properties from the ontolgy *Schema.org*|
 >|@prefix xsd: \< http://www.w3.org/2001/XMLSchema# \> .|A CURI for every usage of the XML Schema |
  
  
