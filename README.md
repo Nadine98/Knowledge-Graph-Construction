@@ -32,7 +32,7 @@ ____
  
 &nbsp; 
  
-### Improtant Libraries 
+### Important Libraries 
  
 1. RDFLib is a Python library for working with RDF and creating the knowledge graph
 
@@ -116,7 +116,7 @@ ___
 
 &nbsp; 
  
-### Improtant Libraries
+### Important Libraries
  
 1. RDFLib for working with RDF and creating the knowledge graph
 
