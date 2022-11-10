@@ -135,7 +135,7 @@ class foodProduct:
                 allergen = [allergen.ingredient]
             self.__allergen.extend(allergen)
 
-    def setNritional_information(self, nutrition):
+    def setNuritionalInformation(self, nutrition):
         if type(nutrition) is nutritional_information:
             self.__nutritional_information = nutrition
 

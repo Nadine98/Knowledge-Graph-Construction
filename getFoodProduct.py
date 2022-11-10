@@ -89,7 +89,7 @@ def allergens(soup, foodIngredients):
         for a in table:
             notIN = False
 
-            for i in foodIngredients: 
+            for i in foodIngredients:
 
                 # Check if the allergen from the table is in the ingredient list
                 if a.lower() in i.ingredient.lower():
@@ -243,8 +243,8 @@ def ingredients(soup):
 def amazon_category(soup):
 
     category = 'None'
-
     info = soup.find('div', attrs={'id': 'showing-breadcrumbs_div'})
+
     if info:
         info = info.find(
             'ul', attrs={'class': 'a-unordered-list a-horizontal a-size-small'})
@@ -262,8 +262,8 @@ def amazon_category(soup):
 
     return category
 
-# Extract the nutritional information from a table with the headline 'Nährwertangaben'
-# In the table rows with the content 'Portionsgröße', 'Fett', 'Kohlenhydrate' and 'Eiweiß'
+# Extract the nutritional information from table 'Nährwertangaben'
+# Rows of table 'Portionsgröße', 'Fett', 'Kohlenhydrate' and 'Eiweiß'
 
 
 def nutritionalInformation(soup):
@@ -273,29 +273,30 @@ def nutritionalInformation(soup):
     if info:
         table_rows = info.find_parent('div').table.find_all('tr')
 
-        for td in enumerate(table_rows):
+        for row in table_rows:
+            th = row.th.text.strip().replace('\u200e', '')
 
-            if 'Portionsgröße ' in td[1].text:
-                nutritionalInformation.setServingSize(
-                    table_rows[td[0]].td.text.strip().replace('\u200e', ''))
+            if 'Portionsgröße' == th:
+                td = row.td.text.strip().replace('\u200e', '')
+                nutritionalInformation.setServingSize(td)
 
-            if 'Fett ' in td[1].text:
-                nutritionalInformation.setFats(
-                    table_rows[td[0]].td.text.strip().replace('\u200e', ''))
+            if 'Fett' == th:
+                td = row.td.text.strip().replace('\u200e', '')
+                nutritionalInformation.setFats(td)
 
-            if 'Kohlenhydrate ' in td[1].text:
-                nutritionalInformation.setCarbohydrates(
-                    table_rows[td[0]].td.text.strip().replace('\u200e', ''))
+            if 'Kohlenhydrate' == th:
+                td = row.td.text.strip().replace('\u200e', '')
+                nutritionalInformation.setCarbohydrates(td)
 
-            if 'Eiweiß ' in td[1].text:
-                nutritionalInformation.setProteins(
-                    table_rows[td[0]].td.text.strip().replace('\u200e', ''))
+            if 'Eiweiß' == th:
+                td = row.td.text.strip().replace('\u200e', '')
+                nutritionalInformation.setProteins(td)
 
     return nutritionalInformation
 
 
 # Extract the country from a table with the headline 'Allgemeine Produktinformationen'
-# In the table row with the content 'Ursprungsland' or 'Herkunftsland'
+# In the table row with the content 'Ursprungsland'/'Herkunftsland'
 def country(soup):
     trans = Translator()
 
@@ -305,19 +306,10 @@ def country(soup):
     if info:
         table_rows = info.find_parent('div').table.find_all('tr')
 
-        for td in enumerate(table_rows):
-            if 'Ursprungsland' in td[1].text or 'Herkunftsland' in td[1].text:
-                country = table_rows[td[0]].td.text
-                country = country.replace('\u200e', '').strip()
-
-                country = trans.translate(country, dest='de').text
-
+        for row in table_rows:
+            if row.th.text.replace('\u200e', '').strip() in ['Herkunftsland', 'Ursprungsland']:
+                country = row.td.text.replace('\u200e', '').strip()
                 break
-
-        if country == 'Vereinigte Staaten':
-            country = 'USA'
-        if country == 'Vereinigte Königreich' or country == 'Vereinigtes Königreich':
-            country = 'UK'
 
     return country
 
@@ -330,10 +322,9 @@ def brand(soup):
     if info:
         table_rows = info.find_parent('div').table.find_all('tr')
 
-        for td in enumerate(table_rows):
-            if 'Marke' in td[1].text:
-                brand = table_rows[td[0]].td.text
-                brand = brand.replace('\u200e', '').strip()
+        for row in table_rows:
+            if 'Marke' in row.th.text.replace('\u200e', '').strip():
+                brand = row.td.text.replace('\u200e', '').strip()
     else:
         brand = 'None'
 
@@ -417,7 +408,6 @@ def get_ASIN(url):
 def get_product(url):
 
     foodproduct = foodProduct()
-
     foodproduct.setUrl(url)
     foodproduct.setAsin(get_ASIN(foodproduct.getUrl()))
 
@@ -428,20 +418,20 @@ def get_product(url):
     foodproduct.setPrice(price(soup))
     foodproduct.setBrand(brand(soup))
     foodproduct.setCountry(country(soup))
-    foodproduct.setNritional_information(nutritionalInformation(soup))
+    foodproduct.setNuritionalInformation(nutritionalInformation(soup))
     foodproduct.setCategory(amazon_category(soup))
     foodproduct.setReviewNumber(reviewNumber(soup))
     foodproduct.setRating(rating(soup))
     foodproduct.setIngredients(ingredients(soup))
 
-    # If there aren't ingredients then extraxt the allergens from the allergy table
+    # If there aren't ingredients then extract the allergens from the allergy table
     # and add the allergens to the ingredients
     if foodproduct.getIngredients() == 'None':
         foodproduct.setAllergens(allergies_table(soup))
         if foodproduct.getAllergens() != 'None':
             foodproduct.setIngredients(foodproduct.getAllergens())
 
-    # If there are ingredients then extraxt the allergens from the ingredient list and the allergy table
+    # If there are ingredients then extract the allergens from the ingredient list and the allergy table
     # and add the allergens to the ingredient list if they are not inside it
     else:
         foodproduct.setAllergens(allergens(soup, foodproduct.getIngredients()))

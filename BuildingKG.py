@@ -1,9 +1,11 @@
+
 from getFoodProduct import get_product
 from pathlib import Path
 from cleanData import cleanKG
 
 from rdflib import Graph, URIRef, BNode, Literal
 from rdflib.namespace import Namespace, RDF, SDO, XSD, RDFS
+import csv
 
 foodGraph = Graph()
 
@@ -24,6 +26,7 @@ def addfoodProduct(fproduct):
     individualProduct = Namespace('https://schema.org/IndividualProduct#')
     dbpediaResource = Namespace('http://dbpedia.org/resource/')
 
+
     schema = SDO
     rdf = RDF
     rdfs = RDFS
@@ -40,7 +43,7 @@ def addfoodProduct(fproduct):
     foodGraph.bind('rdfs', rdfs)
     foodGraph.bind('xsd', xsd)
 
-# ------------------------------------General product information-----------------------------------------
+# ------------------------------------ General product information-----------------------------------------
 
     # Create nodes for the general product information
     country = URIRef(dbpediaResource[fproduct.getCountry()])
@@ -52,7 +55,6 @@ def addfoodProduct(fproduct):
     asin = Literal(fproduct.getAsin(), datatype=xsd['string'])
     url = Literal(fproduct.getUrl(), datatype=xsd['string'])
     category = Literal(fproduct.getCategory(), datatype=xsd['string'])
-    countryName = Literal(fproduct.getCountry(), lang='de')
 
     # Add the nodes for general product information
     foodGraph.add((foodproduct, rdf.type, food['FoodProduct']))
@@ -62,10 +64,8 @@ def addfoodProduct(fproduct):
     foodGraph.add((foodproduct, individualProduct['price'], price))
     foodGraph.add((foodproduct, individualProduct['productID'], asin))
     foodGraph.add((foodproduct, individualProduct['url'], url))
-    foodGraph.add((foodproduct, schema['isBasedOn'], url))
     foodGraph.add((foodproduct, individualProduct['category'], category))
     foodGraph.add((foodproduct, individualProduct['countryOfOrigin'], country))
-    foodGraph.add((country, rdfs.label, countryName))
 
 # ------------------------------------Nutritional information----------------------------------------------------------
 
@@ -90,7 +90,7 @@ def addfoodProduct(fproduct):
         (nutritionalFacts, nutritionalInformation['carbohydrateContent'], carbohydrates))
 
 
-# ------------------------------------Ingredients and sub-ingredients-------------------------------------------------------
+# ------------------------------------ Ingredients and sub-ingredients-------------------------------------------------------
 
     ingr = Namespace('https://example.org/food/ingredient/')
 
@@ -140,13 +140,11 @@ def addfoodProduct(fproduct):
                     foodGraph.add((subing, rdfs.label, subIngredientName))
 
 
-# ------------------------------------Allergens--------------------------------------------------
+# ------------------------------------ Allergens --------------------------------------------------
 
         if fproduct.getAllergens() != 'None':
 
             allergen = URIRef(dbpediaResource['Allergen'])
-            foodGraph.add(
-                (allergen, rdfs.label, Literal('Allergen', lang='de')))
 
             # Add the allergens in the KG
             for a in fproduct.getAllergens():
@@ -154,7 +152,7 @@ def addfoodProduct(fproduct):
                 foodGraph.add((allergy, rdf.type, allergen))
 
 
-# ------------------------------------Rating and the ReviewNumber--------------------------------------
+# ------------------------------------ Rating and the ReviewNumber --------------------------------------
 
     foodGraph.add((foodproduct, schema['ratingValue'], Literal(
         fproduct.getRating(), datatype=xsd['string'])))
@@ -177,7 +175,7 @@ def get_url():
 def buildGraph():
 
     # Check if a Turtle file exists
-    # if yes, parse this file --> useful by duplicates
+    # if yes, parse this file
     if Path('foodGraph.ttl').is_file():
         exists = True
         foodGraph.parse('foodGraph.ttl', format='ttl')
@@ -193,8 +191,8 @@ def buildGraph():
         if url == '':
             break
 
-        # if the KG exists, then check if the food product is allready in the Knowledge Graph
-        # if yes,skip this url
+        # if the KG exists, then check if the food product is already in the Knowledge Graph
+        # if yes, skip this url
         # else, fetch all information to this product and add it to the KG
         node = Literal(url, datatype=XSD['string'])
         if exists and (None, None, node) in foodGraph:
