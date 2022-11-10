@@ -5,7 +5,6 @@ from cleanData import cleanKG
 
 from rdflib import Graph, URIRef, BNode, Literal
 from rdflib.namespace import Namespace, RDF, SDO, XSD, RDFS
-import csv
 
 foodGraph = Graph()
 
