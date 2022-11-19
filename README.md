@@ -217,14 +217,12 @@ The created RDF graph is composed of triple statements that have the from <subje
 &nbsp;
 
 ## Turtle
-
-| synatax                            | Definition                                                                                                                                  |
-| :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ | --- |
-| `<subject> <predicate> <ocject> .` | Is the triple structure of a statement                                                                                                      |
-| `;`                                | Is used for statments that share the same subject. The first statement ends with it and the following statements follow without the subject |
-| `,`                                | Is used for statements that share the same suject and predicate. The object are seperated by a comma                                        |     |
-| `a`                                | Is a abbrevation of the predicate rdf:type (is_a)                                                                                           |
-| `:`                                | Is used if an URI is abbrevated through a CURI                                                                                              |
+|Synatax | Definition|
+|:------ |:----
+| `;`    | Is used for statments that share the same subject. The first statement ends with it and the following statements follow without the subject |
+| `,`  | Is used for statements that share the same suject and predicate. The object are seperated by a comma|
+| `a`| Is a abbrevation of the predicate rdf:type (is_a)|
+| `:`| Is used if an URI is abbrevated through a CURI|
 
 &nbsp;
 
