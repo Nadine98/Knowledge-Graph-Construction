@@ -1,0 +1,11 @@
+name: env
+channels:
+  - defaults
+dependencies:
+  - python >= 3.9
+  - pip
+  - pathlib=1.0.1
+  - pip:
+      - rdflib==6.2.0
+      - bs4==0.0.1
+      - selenium==4.1.5
