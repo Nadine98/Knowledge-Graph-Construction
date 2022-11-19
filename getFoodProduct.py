@@ -1,14 +1,11 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import re
-from googletrans import Translator
 
 from FoodProduct import foodProduct
 from FoodProduct import nutritional_information
 
 # Extract the rating_score from the tag span with class='a-icon-alt'
-
-
 def rating(soup):
     try:
         review_score = soup.find(
@@ -298,7 +295,6 @@ def nutritionalInformation(soup):
 # Extract the country from a table with the headline 'Allgemeine Produktinformationen'
 # In the table row with the content 'Ursprungsland'/'Herkunftsland'
 def country(soup):
-    trans = Translator()
 
     country = 'None'
     info = soup.find('h5', text='Allgemeine Produktinformationen')
